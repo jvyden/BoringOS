@@ -40,7 +40,7 @@ public class ProgramGenerator : ISourceGenerator
         string members = string.Empty;
         foreach (string program in programNames)
         {
-            members += $"new {program}(), ";
+            members += $"new {program}(),\n";
         }
 
         string source =
