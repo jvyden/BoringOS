@@ -43,9 +43,11 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         return info;
     }
 
-    public override int CollectGarbage()
+    public override long CollectGarbage()
     {
-        return Heap.Collect();
+        long allocatedBefore = GCImplementation.GetUsedRAM();
+        Heap.Collect();
+        return allocatedBefore - GCImplementation.GetUsedRAM();
     }
 
     protected override void WriteAll(string message)

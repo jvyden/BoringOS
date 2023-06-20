@@ -4,10 +4,11 @@ public class BoringEmulatedKernel : AbstractBoringKernel
 {
     protected override bool NeedsManualGarbageCollection => false;
 
-    public override int CollectGarbage()
+    public override long CollectGarbage()
     {
+        long allocatedBefore = GC.GetTotalMemory(false);
         GC.Collect();
-        return -1;
+        return allocatedBefore - GC.GetTotalMemory(false);
     }
 
     protected override void WriteAll(string message)

@@ -8,8 +8,8 @@ public class GarbageCollectProgram : Program
 
     public override byte Invoke(string[] args, BoringSession session)
     {
-        int freed = session.Kernel.CollectGarbage();
-        session.Terminal.WriteString($"Freed {freed} objects\n");
+        long freed = session.Kernel.CollectGarbage();
+        session.Terminal.WriteString($"Freed {freed / 1048576}MB of memory\n");
         return 0;
     }
 }
