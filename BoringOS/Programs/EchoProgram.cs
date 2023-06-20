@@ -9,7 +9,13 @@ public class EchoProgram : Program
 
     public override byte Invoke(string[] args, BoringSession session)
     {
-        session.Terminal.WriteString(string.Join(' ', args));
+        foreach (string arg in args)
+        {
+            session.Terminal.WriteString(arg);
+            session.Terminal.WriteChar(' ');
+        }
+        session.Terminal.WriteChar('\n');
+
         return 0;
     }
 }
