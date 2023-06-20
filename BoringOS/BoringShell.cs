@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using BoringOS.Programs;
 using BoringOS.Terminal;
 
 namespace BoringOS;
@@ -7,12 +9,18 @@ namespace BoringOS;
 public class BoringShell
 {
     private readonly List<string> _history = new();
-    private readonly ITerminal _terminal;
     private const string Prompt = "$ ";
+    
+    private readonly ITerminal _terminal;
+    private readonly BoringSession _session;
+    private readonly List<Program> _programs;
 
-    public BoringShell(ITerminal terminal)
+    public BoringShell(ITerminal terminal, BoringSession session, IEnumerable<Program> programs)
     {
-        _terminal = terminal;
+        this._terminal = terminal;
+        this._session = session;
+
+        this._programs = programs.ToList();
     }
 
     private void WritePrompt(int skip = 0)
@@ -88,7 +96,7 @@ public class BoringShell
         return historyLine;
     }
     
-    public void TakeInput()
+    public void InputCycle()
     {
         WritePrompt();
         string? line = ReadLine();
@@ -99,14 +107,29 @@ public class BoringShell
         {
             this._history.Insert(0, line);
         }
+        else
+        {
+            this._terminal.WriteChar('\n');
+            return;
+        }
         
         this._terminal.WriteChar('\n');
         
         ProcessLine(line.Split(' '));
     }
 
-    private static void ProcessLine(string[] args)
+    private void ProcessLine(string[] args)
     {
-        
+        if (args.Length == 0) return;
+        string programName = args[0];
+
+        Program? program = this._programs.FirstOrDefault(p => p.Name == programName);
+        if (program == null)
+        {
+            this._session.Terminal.WriteString($"{programName}: Program not found\n");
+            return;
+        }
+
+        program.Invoke(args.Skip(1).ToArray(), this._session);
     }
 }

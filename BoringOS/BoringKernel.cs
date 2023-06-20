@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using BoringOS.Extensions;
+using BoringOS.Programs;
 using BoringOS.Terminal;
 using Cosmos.Core;
+using Cosmos.Core.Memory;
 using Cosmos.HAL;
 using Cosmos.System;
 using JetBrains.Annotations;
@@ -15,6 +18,7 @@ public class BoringKernel : Kernel
 {
     private ITerminal _terminal = null!;
     private BoringShell _shell = null!;
+    private BoringSession _session = null!;
 
     private SystemInformation _information;
     
@@ -35,19 +39,30 @@ public class BoringKernel : Kernel
         
         Console.WriteLine("  Initializing terminal");
         // Set up terminal
-        this._terminal = new ConsoleTerminal();
-        // this._terminal = new SerialTerminal();
+        // this._terminal = new ConsoleTerminal();
+        this._terminal = new SerialTerminal();
 
         Console.WriteLine("  Gathering SystemInformation");
         this._information = GetSystemInformation();
 
         Console.Write($"    CPU: {this._information.CPUVendor} {this._information.CPUBrand}, ");
         Console.WriteLine($"{this._information.MemoryCountMegabytes}MB of upper memory");
+        
+        int freed = Heap.Collect();
+        Console.WriteLine($"  Freed {freed} objects");
 
         this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
         this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds()}ns\n");
 
-        this._shell = new BoringShell(_terminal);
+        this._session = new BoringSession(this._terminal, this._information, this._sysTimer);
+
+        List<Program> programs = new()
+        {
+            new EchoProgram(),
+            new GarbageCollectProgram(),
+        };
+
+        this._shell = new BoringShell(this._terminal, this._session, programs);
     }
 
     private static SystemInformation GetSystemInformation()
@@ -86,14 +101,20 @@ public class BoringKernel : Kernel
     {
         try
         {
-            this._shell.TakeInput();
+            this._shell.InputCycle();
         }
         catch(Exception e)
         {
             SerialPort.SendString(e.ToString());
-            
-            Console.Clear();
             Console.WriteLine(e);
         }
+
+        Heap.Collect();
+    }
+
+    protected override void AfterRun()
+    {
+        SerialPort.SendString("\n\nThe kernel has stopped.");
+        Console.WriteLine("\n\nThe kernel has stopped.");
     }
 }

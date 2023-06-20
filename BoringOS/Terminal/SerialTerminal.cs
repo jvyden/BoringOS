@@ -5,7 +5,18 @@ namespace BoringOS.Terminal;
 
 public class SerialTerminal : ITerminal
 {
-    public ConsoleKeyInfo ReadKey() => new((char)SerialPort.Receive(), ConsoleKey.NoName, false, false, false);
+    public ConsoleKeyInfo ReadKey()
+    {
+        char c = (char)SerialPort.Receive();
+        ConsoleKey key = c switch
+        {
+            '\r' => ConsoleKey.Enter,
+            '\b' => ConsoleKey.Backspace,
+            _ => ConsoleKey.NoName
+        };
+
+        return new ConsoleKeyInfo(c, key, char.IsUpper(c), false, false);
+    }
 
     public int CursorX { get; set; }
     public int CursorY { get; set; }
@@ -19,16 +30,17 @@ public class SerialTerminal : ITerminal
 
     public void WriteChar(char c)
     {
+        if(c == '\n') SerialPort.Send('\r');
         SerialPort.Send(c);
     }
 
     public void WriteString(string str)
     {
-        SerialPort.SendString(str);
+        SerialPort.SendString(str.ReplaceLineEndings("\r\n"));
     }
 
     public void ClearLine(int skip = 0)
     {
-        this.WriteString("\r\n");
+        this.WriteChar('\n');
     }
 }
