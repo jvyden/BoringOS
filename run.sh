@@ -30,4 +30,4 @@ then
 fi
 
 # Emulate the ISO
-qemu-system-x86_64 -boot d -cdrom "$ISO" -m "$MEMORY_SIZE"
+qemu-system-x86_64 -boot d -cdrom "$ISO" -m "$MEMORY_SIZE" -enable-kvm
