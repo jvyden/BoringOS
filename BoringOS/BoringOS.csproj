@@ -8,20 +8,16 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <EnableGDB>False</EnableGDB>
-        <StartCosmosGDB>False</StartCosmosGDB>
-        <VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
-        <CosmosDebugPort>Serial: COM1</CosmosDebugPort>
-        <Launch>VMware</Launch>
-        <Profile>VMware</Profile>
-        <Description>Use VMware Player or Workstation to deploy and debug.</Description>
-        <PxeInterface>192.168.0.8</PxeInterface>
+        <EnableDebug>False</EnableDebug>
+        <RemoteDebugEnabled>False</RemoteDebugEnabled>
+        <DebugEnabled>False</DebugEnabled>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604"/>
-        <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604"/>
-        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604"/>
+        <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604" />
+        <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604" />
+        <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
     </ItemGroup>
 
 </Project>
