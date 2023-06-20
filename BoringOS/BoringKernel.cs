@@ -1,12 +1,16 @@
 ﻿using System;
+using BoringOS.Terminal;
+using Cosmos.HAL;
 using Cosmos.System;
 using JetBrains.Annotations;
 using Console = System.Console;
+using Global = Cosmos.System.Global;
 
 namespace BoringOS;
 
 public class BoringKernel : Kernel
 {
+    private ITerminal _terminal = null!;
     private BoringShell _shell = null!;
 
     protected override void OnBoot()
@@ -17,13 +21,15 @@ public class BoringKernel : Kernel
     [UsedImplicitly]
     protected override void BeforeRun()
     {
-        Console.WriteLine("Cosmos kernel initialized");
-
-        // Console.Clear();
-        Console.WriteLine($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})");
+        Console.WriteLine("Cosmos kernel initialized, jumping to BoringKernel");
         
-        // Setup
-        this._shell = new BoringShell();
+        // Set up terminal
+        // this._terminal = new ConsoleTerminal();
+        this._terminal = new SerialTerminal();
+        
+        this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
+
+        this._shell = new BoringShell(_terminal);
     }
 
     [UsedImplicitly]
@@ -35,6 +41,8 @@ public class BoringKernel : Kernel
         }
         catch(Exception e)
         {
+            SerialPort.SendString(e.ToString());
+            
             Console.Clear();
             Console.WriteLine(e);
         }

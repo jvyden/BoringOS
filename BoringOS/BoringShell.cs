@@ -1,13 +1,26 @@
 using System;
 using System.Collections.Generic;
+using BoringOS.Terminal;
 
 namespace BoringOS;
 
 public class BoringShell
 {
     private readonly List<string> _history = new();
+    private readonly ITerminal _terminal;
     private const string Prompt = "$ ";
 
+    public BoringShell(ITerminal terminal)
+    {
+        _terminal = terminal;
+    }
+
+    private void WritePrompt(int skip = 0)
+    {
+        this._terminal.ClearLine(Prompt.Length + skip);
+        this._terminal.WriteString(Prompt);
+    }
+    
     private string ReadLine()
     {
         string line = "";
@@ -16,7 +29,7 @@ public class BoringShell
 
         while (true)
         {
-            ConsoleKeyInfo key = Console.ReadKey(true);
+            ConsoleKeyInfo key = this._terminal.ReadKey();
             if (key.Key == ConsoleKey.Enter) break;
 
             if (key.Key == ConsoleKey.UpArrow)
@@ -47,49 +60,32 @@ public class BoringShell
                 lineIndex--;
                 
                 WritePrompt(line.Length);
-                Console.Write(line);
+                this._terminal.WriteString(line);
             }
             else
             {
                 line = line.Insert(lineIndex, key.KeyChar.ToString());
-                lineIndex++;
+
+                this._terminal.CursorX = Prompt.Length + lineIndex;
+                this._terminal.WriteString(line.Substring(lineIndex));
                 
-                WritePrompt(line.Length);
-                Console.Write(line);
+                lineIndex++;
             }
             
-            Console.SetCursorPosition(lineIndex + Prompt.Length, Console.CursorTop);
+            this._terminal.CursorX = lineIndex + Prompt.Length;
         }
 
         return line;
     }
-
+    
     private string ShowHistory(int historyIndex)
     {
-        historyIndex = Math.Clamp(historyIndex, 0, _history.Count - 1);
-        string historyLine = _history[historyIndex];
+        historyIndex = Math.Clamp(historyIndex, 0, this._history.Count - 1);
+        string historyLine = this._history[historyIndex];
                 
         WritePrompt(historyLine.Length);
-        Console.Write(historyLine);
+        this._terminal.WriteString(historyLine);
         return historyLine;
-    }
-
-    private void ClearLine(int skip = 0)
-    {
-        int y = Console.CursorTop;
-        Console.SetCursorPosition(skip, y);
-        for (int i = 0; i < Math.Clamp(Console.WindowWidth - skip, 0, Console.WindowWidth); i++)
-        {
-            Console.Write(' ');
-        }
-        
-        Console.SetCursorPosition(0, y);
-    }
-
-    private void WritePrompt(int skip = 0)
-    {
-        ClearLine(Prompt.Length + skip);
-        Console.Write(Prompt);
     }
     
     public void TakeInput()
@@ -104,7 +100,7 @@ public class BoringShell
             this._history.Insert(0, line);
         }
         
-        Console.Write('\n');
+        this._terminal.WriteChar('\n');
         
         ProcessLine(line.Split(' '));
     }
