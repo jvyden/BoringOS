@@ -7,6 +7,12 @@ namespace BoringOS.Kernel.Time;
 
 public class CPUKernelTimer : KernelTimer
 {
+    private const long OneSecondNs = 1_000_000_000;
+    private const long OneSecondTs = 10_000;
+    // private const uint Frequency = 1_000;
+    private const uint Frequency = 10; // for some reason, this is the best precision i can get.
+    private const long Precision = OneSecondNs / Frequency;
+    
     private long _elapsedTicks;
 
     // protected override long Now => (long)(CPU.GetCPUUptime() / 1000);
@@ -14,11 +20,9 @@ public class CPUKernelTimer : KernelTimer
 
     public override void Start()
     {
-        const long precision = 1_000_000_000 / 10; // 1 second divided by n 
-        this.StartTicks = _elapsedTicks = DateTime.UtcNow.Ticks;
         Global.PIT.RegisterTimer(new PIT.PITTimer(() =>
         {
-            this._elapsedTicks += precision / 100;
-        }, precision, true));
+            this._elapsedTicks += OneSecondTs * Frequency * 10;
+        }, Precision, true));
     }
 }
