@@ -60,6 +60,7 @@ public class BoringKernel : Kernel
         {
             new EchoProgram(),
             new GarbageCollectProgram(),
+            new HaltProgram(),
         };
 
         this._shell = new BoringShell(this._terminal, this._session, programs);
