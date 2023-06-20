@@ -18,8 +18,10 @@ public abstract partial class AbstractBoringKernel
     
     public abstract bool HaltKernel();
     public abstract int CollectGarbage();
-    public abstract void WriteAll(string message);
+    protected abstract void WriteAll(string message);
     protected abstract SystemInformation GetSystemInformation();
+
+    protected virtual ITerminal InstantiateTerminal() => new ConsoleTerminal();
 
     private partial List<Program> InstantiatePrograms();
 
@@ -32,9 +34,9 @@ public abstract partial class AbstractBoringKernel
     public void BeforeRun()
     {
         Console.WriteLine("  Initializing terminal");
+        
         // Set up terminal
-        this._terminal = new ConsoleTerminal();
-        // this._terminal = new SerialTerminal();
+        this._terminal = this.InstantiateTerminal();
 
         Console.WriteLine("  Gathering SystemInformation");
         this._information = GetSystemInformation();
@@ -50,14 +52,6 @@ public abstract partial class AbstractBoringKernel
 
         this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
         this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds()}ns\n");
-
-        // List<Program> programs = new()
-        // {
-        //     new EchoProgram(),
-        //     new GarbageCollectProgram(),
-        //     new HaltProgram(),
-        //     new HelpProgram(),
-        // };
 
         List<Program> programs = this.InstantiatePrograms();
 

@@ -16,7 +16,7 @@ public class BoringEmulatedKernel : AbstractBoringKernel
         return -1;
     }
 
-    public override void WriteAll(string message)
+    protected override void WriteAll(string message)
     {
         Console.WriteLine(message);
     }
