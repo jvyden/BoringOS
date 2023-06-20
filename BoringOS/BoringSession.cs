@@ -6,7 +6,7 @@ namespace BoringOS;
 
 public class BoringSession
 {
-    public BoringSession(ITerminal terminal, SystemInformation systemInformation, Stopwatch sysTimer, IBoringKernel kernel)
+    public BoringSession(ITerminal terminal, SystemInformation systemInformation, Stopwatch sysTimer, AbstractBoringKernel kernel)
     {
         this.Terminal = terminal;
         this.SystemInformation = systemInformation;
@@ -25,7 +25,7 @@ public class BoringSession
 
     public readonly ITerminal Terminal;
     public readonly SystemInformation SystemInformation;
-    public readonly IBoringKernel Kernel;
+    public readonly AbstractBoringKernel Kernel;
     
     private readonly Stopwatch _sysTimer;
     public long ElapsedKernelNanoseconds => this._sysTimer.ElapsedNanoseconds();

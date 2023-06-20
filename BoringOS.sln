@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Analyzers", "Borin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS", "BoringOS\BoringOS.csproj", "{90E05227-DFB7-481E-B514-FB66CEE721B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Emulator", "BoringOS.Emulator\BoringOS.Emulator.csproj", "{C0D509BC-49C9-45B6-AFC7-B9633308C099}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{90E05227-DFB7-481E-B514-FB66CEE721B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90E05227-DFB7-481E-B514-FB66CEE721B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90E05227-DFB7-481E-B514-FB66CEE721B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0D509BC-49C9-45B6-AFC7-B9633308C099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0D509BC-49C9-45B6-AFC7-B9633308C099}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0D509BC-49C9-45B6-AFC7-B9633308C099}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0D509BC-49C9-45B6-AFC7-B9633308C099}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
