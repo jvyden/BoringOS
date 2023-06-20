@@ -1,5 +1,3 @@
-using System;
-
 namespace BoringOS.Programs;
 
 public class EchoProgram : Program
