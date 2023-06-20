@@ -1,16 +1,18 @@
 using System.Diagnostics;
 using BoringOS.Extensions;
+using BoringOS.Programs;
 using BoringOS.Terminal;
 
 namespace BoringOS;
 
 public class BoringSession
 {
-    public BoringSession(ITerminal terminal, SystemInformation systemInformation, Stopwatch sysTimer, AbstractBoringKernel kernel)
+    public BoringSession(ITerminal terminal, SystemInformation systemInformation, Stopwatch sysTimer, List<Program> programs, AbstractBoringKernel kernel)
     {
         this.Terminal = terminal;
         this.SystemInformation = systemInformation;
         this.Kernel = kernel;
+        this.Programs = programs;
         this._sysTimer = sysTimer;
         
         this._sessionTimer = new Stopwatch();
@@ -26,6 +28,7 @@ public class BoringSession
     public readonly ITerminal Terminal;
     public readonly SystemInformation SystemInformation;
     public readonly AbstractBoringKernel Kernel;
+    public readonly List<Program> Programs;
     
     private readonly Stopwatch _sysTimer;
     public long ElapsedKernelNanoseconds => this._sysTimer.ElapsedNanoseconds();

@@ -39,23 +39,26 @@ public abstract class AbstractBoringKernel
 
         Console.Write($"    CPU: {this._information.CPUVendor} {this._information.CPUBrand}, ");
         Console.WriteLine($"{this._information.MemoryCountMegabytes}MB of upper memory");
-        
-        int freed = this.CollectGarbage();
-        Console.WriteLine($"  Freed {freed} objects");
+
+        if (this.NeedsManualGarbageCollection)
+        {
+            int freed = this.CollectGarbage();
+            Console.WriteLine($"  Freed {freed} objects");
+        }
 
         this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
         this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds()}ns\n");
-
-        this._session = new BoringSession(this._terminal, this._information, this._sysTimer, this);
 
         List<Program> programs = new()
         {
             new EchoProgram(),
             new GarbageCollectProgram(),
             new HaltProgram(),
+            new HelpProgram(),
         };
 
-        this._shell = new BoringShell(this._terminal, this._session, programs);
+        this._session = new BoringSession(this._terminal, this._information, this._sysTimer, programs, this);
+        this._shell = new BoringShell(this._session);
     }
 
     public void Run()
@@ -69,7 +72,8 @@ public abstract class AbstractBoringKernel
             this.WriteAll(e.ToString());
         }
 
-        this.CollectGarbage();
+        if(this.NeedsManualGarbageCollection) 
+            this.CollectGarbage();
     }
 
     public void AfterRun()

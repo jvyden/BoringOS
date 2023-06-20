@@ -11,22 +11,17 @@ public class BoringShell
     private readonly List<string> _history = new();
     private const string Prompt = "$ ";
     
-    private readonly ITerminal _terminal;
     private readonly BoringSession _session;
-    private readonly List<Program> _programs;
 
-    public BoringShell(ITerminal terminal, BoringSession session, IEnumerable<Program> programs)
+    public BoringShell(BoringSession session)
     {
-        this._terminal = terminal;
         this._session = session;
-
-        this._programs = programs.ToList();
     }
 
     private void WritePrompt(int skip = 0)
     {
-        this._terminal.ClearLine(Prompt.Length + skip);
-        this._terminal.WriteString(Prompt);
+        this._session.Terminal.ClearLine(Prompt.Length + skip);
+        this._session.Terminal.WriteString(Prompt);
     }
     
     private string ReadLine()
@@ -37,7 +32,7 @@ public class BoringShell
 
         while (true)
         {
-            ConsoleKeyInfo key = this._terminal.ReadKey();
+            ConsoleKeyInfo key = this._session.Terminal.ReadKey();
             if (key.Key == ConsoleKey.Enter) break;
 
             if (key.Key == ConsoleKey.UpArrow)
@@ -68,19 +63,19 @@ public class BoringShell
                 lineIndex--;
                 
                 WritePrompt(line.Length);
-                this._terminal.WriteString(line);
+                this._session.Terminal.WriteString(line);
             }
             else
             {
                 line = line.Insert(lineIndex, key.KeyChar.ToString());
 
-                this._terminal.CursorX = Prompt.Length + lineIndex;
-                this._terminal.WriteString(line.Substring(lineIndex));
+                this._session.Terminal.CursorX = Prompt.Length + lineIndex;
+                this._session.Terminal.WriteString(line.Substring(lineIndex));
                 
                 lineIndex++;
             }
             
-            this._terminal.CursorX = lineIndex + Prompt.Length;
+            this._session.Terminal.CursorX = lineIndex + Prompt.Length;
         }
 
         return line;
@@ -92,7 +87,7 @@ public class BoringShell
         string historyLine = this._history[historyIndex];
                 
         WritePrompt(historyLine.Length);
-        this._terminal.WriteString(historyLine);
+        this._session.Terminal.WriteString(historyLine);
         return historyLine;
     }
     
@@ -109,11 +104,11 @@ public class BoringShell
         }
         else
         {
-            this._terminal.WriteChar('\n');
+            this._session.Terminal.WriteChar('\n');
             return;
         }
         
-        this._terminal.WriteChar('\n');
+        this._session.Terminal.WriteChar('\n');
         
         ProcessLine(line.Split(' '));
     }
@@ -123,7 +118,7 @@ public class BoringShell
         if (args.Length == 0) return;
         string programName = args[0];
 
-        Program? program = this._programs.FirstOrDefault(p => p.Name == programName);
+        Program? program = this._session.Programs.FirstOrDefault(p => p.Name == programName);
         if (program == null)
         {
             this._session.Terminal.WriteString($"{programName}: Program not found\n");

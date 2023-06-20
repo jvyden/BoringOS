@@ -20,7 +20,7 @@ public class BoringCosmosKernel : Cosmos.System.Kernel
     [UsedImplicitly]
     protected override void BeforeRun()
     {
-        Console.WriteLine("Cosmos kernel initialized, jumping to BoringBareMetalKernel");
+        Console.WriteLine("Cosmos kernel initialized, jumping to BoringKernel");
         Console.ForegroundColor = ConsoleColor.Gray;
         this._kernel.BeforeRun();
     }
