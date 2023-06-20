@@ -39,8 +39,8 @@ public class BoringKernel : Kernel
         
         Console.WriteLine("  Initializing terminal");
         // Set up terminal
-        // this._terminal = new ConsoleTerminal();
-        this._terminal = new SerialTerminal();
+        this._terminal = new ConsoleTerminal();
+        // this._terminal = new SerialTerminal();
 
         Console.WriteLine("  Gathering SystemInformation");
         this._information = GetSystemInformation();
@@ -54,7 +54,7 @@ public class BoringKernel : Kernel
         this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
         this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds()}ns\n");
 
-        this._session = new BoringSession(this._terminal, this._information, this._sysTimer);
+        this._session = new BoringSession(this._terminal, this._information, this._sysTimer, this);
 
         List<Program> programs = new()
         {
@@ -115,7 +115,9 @@ public class BoringKernel : Kernel
 
     protected override void AfterRun()
     {
-        SerialPort.SendString("\n\nThe kernel has stopped.");
-        Console.WriteLine("\n\nThe kernel has stopped.");
+        const string msg = "\n\nThe kernel has stopped. Halt.";
+        SerialPort.SendString(msg);
+        Console.WriteLine(msg);
+        CPU.Halt();
     }
 }
