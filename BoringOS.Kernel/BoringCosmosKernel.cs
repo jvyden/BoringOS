@@ -1,5 +1,4 @@
 ﻿using System;
-using Cosmos.Core.Memory;
 using JetBrains.Annotations;
 using Global = Cosmos.System.Global;
 
@@ -11,10 +10,10 @@ public class BoringCosmosKernel : Cosmos.System.Kernel
 
     protected override void OnBoot()
     {
+        Global.Init(this.GetTextScreen(), false, true, false, false);
+        
         _kernel = new BoringBareMetalKernel();
         this._kernel.OnBoot();
-
-        Global.Init(this.GetTextScreen(), false, true, false, false);
     }
 
     [UsedImplicitly]

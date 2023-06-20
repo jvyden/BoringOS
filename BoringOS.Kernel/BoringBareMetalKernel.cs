@@ -1,6 +1,6 @@
 using System;
-using BoringOS.Kernel.Terminal;
-using BoringOS.Terminal;
+using BoringOS.Kernel.Time;
+using BoringOS.Time;
 using Cosmos.Core;
 using Cosmos.Core.Memory;
 using Cosmos.HAL;
@@ -60,8 +60,6 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         Console.WriteLine(message);
     }
 
-    protected override ITerminal InstantiateTerminal()
-    {
-        return new SerialTerminal();
-    }
+    // protected override ITerminal InstantiateTerminal() => new SerialTerminal();
+    public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
 }

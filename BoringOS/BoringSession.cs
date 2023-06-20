@@ -1,13 +1,12 @@
-using System.Diagnostics;
-using BoringOS.Extensions;
 using BoringOS.Programs;
 using BoringOS.Terminal;
+using BoringOS.Time;
 
 namespace BoringOS;
 
 public class BoringSession
 {
-    public BoringSession(ITerminal terminal, SystemInformation systemInformation, Stopwatch sysTimer, List<Program> programs, AbstractBoringKernel kernel)
+    public BoringSession(ITerminal terminal, SystemInformation systemInformation, KernelTimer sysTimer, List<Program> programs, AbstractBoringKernel kernel)
     {
         this.Terminal = terminal;
         this.SystemInformation = systemInformation;
@@ -15,7 +14,7 @@ public class BoringSession
         this.Programs = programs;
         this._sysTimer = sysTimer;
         
-        this._sessionTimer = new Stopwatch();
+        this._sessionTimer = kernel.InstantiateTimer();
         this._sessionTimer.Start();
 
         this.SessionId = _sessionIncrement;
@@ -30,11 +29,11 @@ public class BoringSession
     public readonly AbstractBoringKernel Kernel;
     public readonly List<Program> Programs;
     
-    private readonly Stopwatch _sysTimer;
-    public long ElapsedKernelNanoseconds => this._sysTimer.ElapsedNanoseconds();
+    private readonly KernelTimer _sysTimer;
+    public long ElapsedKernelNanoseconds => this._sysTimer.ElapsedNanoseconds;
     public long ElapsedKernelMilliseconds => this._sysTimer.ElapsedMilliseconds;
 
-    private readonly Stopwatch _sessionTimer;
-    public long ElapsedSessionNanoseconds => this._sessionTimer.ElapsedNanoseconds();
+    private readonly KernelTimer _sessionTimer;
+    public long ElapsedSessionNanoseconds => this._sessionTimer.ElapsedNanoseconds;
     public long ElapsedSessionMilliseconds => this._sessionTimer.ElapsedMilliseconds;
 }

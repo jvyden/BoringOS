@@ -1,7 +1,6 @@
-using System.Diagnostics;
-using BoringOS.Extensions;
 using BoringOS.Programs;
 using BoringOS.Terminal;
+using BoringOS.Time;
 
 namespace BoringOS;
 
@@ -12,7 +11,7 @@ public abstract partial class AbstractBoringKernel
     private BoringSession _session = null!;
     private SystemInformation _information;
     
-    private Stopwatch _sysTimer = null!;
+    private KernelTimer _sysTimer = null!;
     
     protected abstract bool NeedsManualGarbageCollection { get; }
     
@@ -22,12 +21,13 @@ public abstract partial class AbstractBoringKernel
     protected abstract SystemInformation GetSystemInformation();
 
     protected virtual ITerminal InstantiateTerminal() => new ConsoleTerminal();
+    public virtual KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
 
     private partial List<Program> InstantiatePrograms();
 
     public void OnBoot()
     {
-        this._sysTimer = new Stopwatch();
+        this._sysTimer = this.InstantiateTimer();
         this._sysTimer.Start();
     }
 
@@ -51,7 +51,7 @@ public abstract partial class AbstractBoringKernel
         }
 
         this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
-        this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds()}ns\n");
+        this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds}ns\n");
 
         List<Program> programs = this.InstantiatePrograms();
 
