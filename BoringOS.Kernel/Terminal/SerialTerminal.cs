@@ -1,7 +1,8 @@
 using System;
+using BoringOS.Terminal;
 using Cosmos.HAL;
 
-namespace BoringOS.Terminal;
+namespace BoringOS.Kernel.Terminal;
 
 public class SerialTerminal : ITerminal
 {

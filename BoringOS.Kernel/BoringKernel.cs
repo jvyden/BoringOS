@@ -7,14 +7,13 @@ using BoringOS.Terminal;
 using Cosmos.Core;
 using Cosmos.Core.Memory;
 using Cosmos.HAL;
-using Cosmos.System;
 using JetBrains.Annotations;
 using Console = System.Console;
 using Global = Cosmos.System.Global;
 
-namespace BoringOS;
+namespace BoringOS.Kernel;
 
-public class BoringKernel : Kernel
+public class BoringKernel : Cosmos.System.Kernel, IBoringKernel
 {
     private ITerminal _terminal = null!;
     private BoringShell _shell = null!;
@@ -48,7 +47,7 @@ public class BoringKernel : Kernel
         Console.Write($"    CPU: {this._information.CPUVendor} {this._information.CPUBrand}, ");
         Console.WriteLine($"{this._information.MemoryCountMegabytes}MB of upper memory");
         
-        int freed = Heap.Collect();
+        int freed = this.CollectGarbage();
         Console.WriteLine($"  Freed {freed} objects");
 
         this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
@@ -110,7 +109,7 @@ public class BoringKernel : Kernel
             Console.WriteLine(e);
         }
 
-        Heap.Collect();
+        this.CollectGarbage();
     }
 
     protected override void AfterRun()
@@ -118,6 +117,17 @@ public class BoringKernel : Kernel
         const string msg = "\n\nThe kernel has stopped. Halt.";
         SerialPort.SendString(msg);
         Console.WriteLine(msg);
-        CPU.Halt();
+        this.HaltKernel();
+    }
+
+    public bool HaltKernel()
+    {
+        this.Stop();
+        return true;
+    }
+
+    public int CollectGarbage()
+    {
+        return Heap.Collect();
     }
 }

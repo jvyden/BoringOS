@@ -1,4 +1,4 @@
-namespace BoringOS;
+namespace BoringOS.Kernel;
 
 public static partial class BoringVersionInformation
 {

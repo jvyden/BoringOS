@@ -1,5 +1,3 @@
-using Cosmos.Core.Memory;
-
 namespace BoringOS.Programs;
 
 public class GarbageCollectProgram : Program
@@ -10,7 +8,7 @@ public class GarbageCollectProgram : Program
 
     public override byte Invoke(string[] args, BoringSession session)
     {
-        int freed = Heap.Collect();
+        int freed = session.Kernel.CollectGarbage();
         session.Terminal.WriteString($"Freed {freed} objects");
         return 0;
     }

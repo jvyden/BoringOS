@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS", "BoringOS\BoringOS.csproj", "{1DA0D8C8-B819-4151-8CFD-2534B51F4D4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Kernel", "BoringOS.Kernel\BoringOS.Kernel.csproj", "{1DA0D8C8-B819-4151-8CFD-2534B51F4D4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Analyzers", "BoringOS.Analyzers\BoringOS.Analyzers.csproj", "{CE4F25B9-E23B-4AEC-9937-ADDEB7ACDE1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS", "BoringOS\BoringOS.csproj", "{90E05227-DFB7-481E-B514-FB66CEE721B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{CE4F25B9-E23B-4AEC-9937-ADDEB7ACDE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE4F25B9-E23B-4AEC-9937-ADDEB7ACDE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE4F25B9-E23B-4AEC-9937-ADDEB7ACDE1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90E05227-DFB7-481E-B514-FB66CEE721B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90E05227-DFB7-481E-B514-FB66CEE721B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90E05227-DFB7-481E-B514-FB66CEE721B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90E05227-DFB7-481E-B514-FB66CEE721B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
