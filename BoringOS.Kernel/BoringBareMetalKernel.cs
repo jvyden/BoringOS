@@ -11,6 +11,7 @@ public class BoringBareMetalKernel : AbstractBoringKernel
 
     protected override SystemInformation GetSystemInformation()
     {
+        Console.WriteLine("    Acquiring vendor name and RAM");
         SystemInformation info = new()
         {
             CPUVendor = CPU.GetCPUVendorName(),
