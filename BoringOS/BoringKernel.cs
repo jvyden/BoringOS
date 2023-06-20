@@ -24,8 +24,8 @@ public class BoringKernel : Kernel
         Console.WriteLine("Cosmos kernel initialized, jumping to BoringKernel");
         
         // Set up terminal
-        // this._terminal = new ConsoleTerminal();
-        this._terminal = new SerialTerminal();
+        this._terminal = new ConsoleTerminal();
+        // this._terminal = new SerialTerminal();
         
         this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
 
