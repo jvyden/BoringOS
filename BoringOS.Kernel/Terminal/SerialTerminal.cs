@@ -44,4 +44,12 @@ public class SerialTerminal : ITerminal
     {
         this.WriteChar('\n');
     }
+
+    public void ClearScreen()
+    {
+        for (int i = 0; i < Height; i++)
+        {
+            this.WriteChar('\n');
+        }
+    }
 }

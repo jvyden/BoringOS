@@ -18,4 +18,5 @@ public interface ITerminal
     public void WriteString(string str);
 
     public void ClearLine(int skip = 0);
+    public void ClearScreen();
 }

@@ -40,4 +40,9 @@ public class ConsoleTerminal : ITerminal
         this.CursorX = 0;
         this.CursorY--;
     }
+
+    public void ClearScreen()
+    {
+        Console.Clear();
+    }
 }
