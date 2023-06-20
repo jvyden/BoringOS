@@ -2,13 +2,7 @@ namespace BoringOS.Emulator;
 
 public class BoringEmulatedKernel : AbstractBoringKernel
 {
-    public bool KernelIsRunning = true;
     protected override bool NeedsManualGarbageCollection => false;
-    public override bool HaltKernel()
-    {
-        this.KernelIsRunning = false;
-        return true;
-    }
 
     public override int CollectGarbage()
     {

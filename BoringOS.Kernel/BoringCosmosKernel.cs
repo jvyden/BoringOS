@@ -27,7 +27,8 @@ public class BoringCosmosKernel : Cosmos.System.Kernel
     [UsedImplicitly]
     protected override void Run()
     {
-        this._kernel.Run();
+        if(!this._kernel.KernelIsRunning) this.Stop();
+        else this._kernel.Run();
     }
 
     protected override void AfterRun()

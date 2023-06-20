@@ -42,12 +42,6 @@ public class BoringBareMetalKernel : AbstractBoringKernel
 
         return info;
     }
-    
-    public override bool HaltKernel()
-    {
-        CPU.Halt();
-        return true;
-    }
 
     public override int CollectGarbage()
     {

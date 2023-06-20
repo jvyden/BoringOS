@@ -15,7 +15,6 @@ public abstract partial class AbstractBoringKernel
     
     protected abstract bool NeedsManualGarbageCollection { get; }
     
-    public abstract bool HaltKernel();
     public abstract int CollectGarbage();
     protected abstract void WriteAll(string message);
     protected abstract SystemInformation GetSystemInformation();
@@ -78,5 +77,13 @@ public abstract partial class AbstractBoringKernel
     {
         this.WriteAll("\n\nThe kernel has stopped. Halt.");
         this.HaltKernel();
+    }
+    
+    public bool KernelIsRunning = true;
+
+    public bool HaltKernel()
+    {
+        this.KernelIsRunning = false;
+        return true;
     }
 }
