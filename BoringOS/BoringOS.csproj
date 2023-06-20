@@ -5,6 +5,7 @@
         <Platform>cosmos</Platform>
         <SupportsX86Intrinsics>false</SupportsX86Intrinsics>
         <SelfContained>True</SelfContained>
+        <TargetsForTfmSpecificContentInPackage>true</TargetsForTfmSpecificContentInPackage>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -20,4 +21,31 @@
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BoringOS.Analyzers\BoringOS.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    </ItemGroup>
+
+    <Target Name="GitBuildInfo" AfterTargets="BeforeBuild">
+        <Message Importance="normal" Text="Acquiring git info"/>
+        <Exec
+                Command="git describe --long --always --dirty --exclude=* --abbrev=8"
+                WorkingDirectory="$(MSBuildProjectDirectory)"
+                ConsoleToMSBuild="true"
+                IgnoreExitCode="true"
+                StandardOutputImportance="normal"
+                Condition="'$(CommitHash)' == ''">
+            <Output TaskParameter="ConsoleOutput" PropertyName="CommitHash" />
+        </Exec>
+
+        <WriteLinesToFile
+                File="$(IntermediateOutputPath)\CommitHash"
+                Lines="$(CommitHash)"
+                Condition="'$(CommitHash)' != ''"
+                Overwrite="true"
+                WriteOnlyWhenDifferent="true"/>
+    </Target>
+
+    <ItemGroup>
+        <AdditionalFiles Include="$(IntermediateOutputPath)\CommitHash"/>
+    </ItemGroup>
 </Project>
