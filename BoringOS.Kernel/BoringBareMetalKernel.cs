@@ -1,5 +1,7 @@
 using System;
+using BoringOS.Kernel.Terminal;
 using BoringOS.Kernel.Time;
+using BoringOS.Terminal;
 using BoringOS.Time;
 using Cosmos.Core;
 using Cosmos.Core.Memory;

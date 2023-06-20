@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
+
 namespace BoringOS.Programs;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithInheritors)]
 public abstract class Program
 {
     protected Program(string name, string? description = null)
