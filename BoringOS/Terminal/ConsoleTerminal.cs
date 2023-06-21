@@ -1,5 +1,3 @@
-using System;
-
 namespace BoringOS.Terminal;
 
 public class ConsoleTerminal : ITerminal

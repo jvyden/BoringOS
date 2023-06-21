@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using Cosmos.System;
-using Cosmos.System.Network.IPv4.UDP.DHCP;
 using JetBrains.Annotations;
 using Console = System.Console;
 using Global = Cosmos.System.Global;
