@@ -13,8 +13,25 @@ public class DebugProgram : Program
         terminal.WriteChar('\n');
         terminal.WriteString("crash: Throw exception\n");
         terminal.WriteString("ret: Return a status code\n");
+        terminal.WriteString("keylog: Log keyboard input from terminal\n");
 
         return 1;
+    }
+
+    private static void KeyLog(ITerminal terminal)
+    {
+        Console.WriteLine("Press enter to exit.");
+        
+        while (true)
+        {
+            ConsoleKeyInfo key = terminal.ReadKey();
+            terminal.WriteString("0x");
+            terminal.WriteString(((byte)key.KeyChar).ToString("x2"));
+            terminal.WriteChar('\n');
+
+            if (key.KeyChar is '\n' or '\r') break;
+            if (key.Key is ConsoleKey.Enter) break;
+        }
     }
 
     public override byte Invoke(string[] args, BoringSession session)
@@ -30,6 +47,11 @@ public class DebugProgram : Program
         {
             if (args.Length < 2) return ShowHelp(session.Terminal);
             return (byte)ushort.Parse(args[1].Trim());
+        }
+
+        if (args[0] == "keylog")
+        {
+            KeyLog(session.Terminal);
         }
 
         return 0;
