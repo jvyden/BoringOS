@@ -1,3 +1,5 @@
+using BoringOS.Time;
+
 namespace BoringOS.Programs;
 
 public class GarbageCollectProgram : Program
@@ -8,8 +10,14 @@ public class GarbageCollectProgram : Program
 
     public override byte Invoke(string[] args, BoringSession session)
     {
+        using KernelTimer timer = session.Kernel.InstantiateTimer();
+        timer.Start();
+        
         long freed = session.Kernel.CollectGarbage();
+        long ms = timer.ElapsedMilliseconds;
+        
         session.Terminal.WriteString($"Freed {freed / 1048576}MB of memory\n");
+        session.Terminal.WriteString($"Took {ms}ms\n");
         return 0;
     }
 }

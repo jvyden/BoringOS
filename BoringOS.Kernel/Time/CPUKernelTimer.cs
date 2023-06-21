@@ -14,15 +14,25 @@ public class CPUKernelTimer : KernelTimer
     private const long Precision = OneSecondNs / Frequency;
     
     private long _elapsedTicks;
+    private PIT.PITTimer? _timer = null;
 
     // protected override long Now => (long)(CPU.GetCPUUptime() / 1000);
     protected override long Now => this._elapsedTicks;
 
     public override void Start()
     {
-        Global.PIT.RegisterTimer(new PIT.PITTimer(() =>
+        if (this._timer != null) throw new InvalidOperationException("Timer is already started");
+        Global.PIT.RegisterTimer(_timer = new PIT.PITTimer(() =>
         {
             this._elapsedTicks += OneSecondTs * Frequency * 10;
         }, Precision, true));
+    }
+
+    public override void Dispose()
+    {
+        if (this._timer == null) return;
+        
+        Global.PIT.UnregisterTimer(this._timer.TimerID);
+        this._timer = null;
     }
 }
