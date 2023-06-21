@@ -14,7 +14,7 @@ namespace BoringOS.Kernel;
 public class BoringBareMetalKernel : AbstractBoringKernel
 {
     protected override bool NeedsManualGarbageCollection => true;
-    internal bool UseSerial = false;
+    internal TerminalType TerminalType = TerminalType.Console;
 
     protected override SystemInformation CollectSystemInfo()
     {
@@ -66,7 +66,14 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         Console.WriteLine(message);
     }
 
-    protected override ITerminal InstantiateTerminal() => this.UseSerial ? new SerialTerminal() : new CanvasTerminal();
+    protected override ITerminal InstantiateTerminal() => TerminalType switch
+    {
+        TerminalType.Console => new ConsoleTerminal(),
+        TerminalType.Serial => new SerialTerminal(),
+        TerminalType.Canvas => new CanvasTerminal(),
+        _ => throw new ArgumentOutOfRangeException()
+    };
+    
     public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
 }

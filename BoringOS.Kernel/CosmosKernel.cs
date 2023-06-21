@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using BoringOS.Kernel.Terminal;
 using Cosmos.System;
 using JetBrains.Annotations;
 using Console = System.Console;
@@ -19,6 +20,21 @@ public class CosmosKernel : Cosmos.System.Kernel
         this._kernel.OnBoot();
     }
 
+    private void HandleStartupKey(char c)
+    {
+        switch (c)
+        {
+            case 's':
+                Console.WriteLine("!! Will boot into serial terminal !! ");
+                this._kernel.TerminalType = TerminalType.Serial;
+                break;
+            case 'c':
+                Console.WriteLine("!! Will boot into canvas terminal !! ");
+                this._kernel.TerminalType = TerminalType.Canvas;
+                break;
+        }
+    }
+
     [UsedImplicitly]
     protected override void BeforeRun()
     {
@@ -26,12 +42,9 @@ public class CosmosKernel : Cosmos.System.Kernel
         Console.ForegroundColor = ConsoleColor.Gray;
 
         Thread.Sleep(25); // Sleep for a bit to wait for a key
-        if (KeyboardManager.TryReadKey(out KeyEvent key) && key.KeyChar == 's')
-        {
-            Console.WriteLine("Telling kernel to instantiate a serial terminal");
-            this._kernel.UseSerial = true;
-        }
-        
+        if (KeyboardManager.TryReadKey(out KeyEvent key)) 
+            HandleStartupKey(key.KeyChar);
+
         this._kernel.BeforeRun();
     }
 
