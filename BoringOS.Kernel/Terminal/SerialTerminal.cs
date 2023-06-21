@@ -133,6 +133,7 @@ public class SerialTerminal : ITerminal
 
     public void ClearLine(int skip = 0)
     {
+        this.CursorX = 0;
         this.WriteVt100Code("2K");
     }
 
