@@ -42,22 +42,21 @@ public class CanvasTerminal : ITerminal
         return Console.ReadKey(true);
     }
     
-    private void DrawChar(int size, int size8, Color color, int index, int x, int y)
+    private void DrawChar(char c, Color color, int x, int y)
     {
-        if (index < 0) return;
+        int index = FontCharset.IndexOf(c); // TODO: cache chars
+        if (index == -1) return;
         
-        int sizePerFont = size * size8 * index;
+        const int size8 = CharHeight / 8;
+        int sizePerFont = CharHeight * size8 * index;
 
-        for (int height = 0; height < size; height++)
+        for (int height = 0; height < CharHeight; height++)
         {
             for (int aw = 0; aw < size8; aw++)
             {
                 for (int ww = 0; ww < 8; ww++)
                 {
-                    int fontIndex = sizePerFont + height * size8 + aw;
-                    if (fontIndex > this._font.Length) return;
-                    
-                    if ((this._font[fontIndex] & (0x80 >> ww)) == 0) continue;
+                    if ((this._font[sizePerFont + height * size8 + aw] & (0x80 >> ww)) == 0) continue;
                     int max = aw * 8 + ww;
 
                     this._canvas.DrawPoint(color, x + max, y + height);
@@ -93,9 +92,7 @@ public class CanvasTerminal : ITerminal
             return;
         }
         
-        int fontIndex = FontCharset.IndexOf(c);
-        this.DrawChar(CharHeight, CharHeight / 8, Color.White, fontIndex, this.CursorX * CharWidth, this.CursorY * CharHeight);
-        
+        this.DrawChar(c, Color.White, this.CursorX * CharWidth, this.CursorY * CharHeight);
         this.CursorX++;
     }
 
