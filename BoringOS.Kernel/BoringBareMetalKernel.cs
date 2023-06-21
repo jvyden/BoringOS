@@ -52,6 +52,11 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         return allocatedBefore - GCImplementation.GetUsedRAM();
     }
 
+    public override long GetAllocatedMemory()
+    {
+        return GCImplementation.GetUsedRAM();
+    }
+
     protected override void WriteAll(string message)
     {
         SerialPort.SendString(message);

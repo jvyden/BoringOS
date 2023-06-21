@@ -11,6 +11,11 @@ public class BoringEmulatedKernel : AbstractBoringKernel
         return allocatedBefore - GC.GetTotalMemory(false);
     }
 
+    public override long GetAllocatedMemory()
+    {
+        return GC.GetTotalMemory(false);
+    }
+
     protected override void WriteAll(string message)
     {
         Console.WriteLine(message);

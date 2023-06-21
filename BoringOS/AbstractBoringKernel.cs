@@ -16,6 +16,7 @@ public abstract partial class AbstractBoringKernel
     protected abstract bool NeedsManualGarbageCollection { get; }
     
     public abstract long CollectGarbage();
+    public abstract long GetAllocatedMemory();
     protected abstract void WriteAll(string message);
     protected abstract SystemInformation GetSystemInformation();
 
@@ -49,7 +50,8 @@ public abstract partial class AbstractBoringKernel
             Console.WriteLine($"  Freed {freed / 1048576}MB of memory");
         }
 
-        this._terminal.WriteString($"\nWelcome to BoringOS {BoringVersionInformation.Type} (commit {BoringVersionInformation.CommitHash})\n");
+        this._terminal.WriteString($"\nWelcome to {BoringVersionInformation.FullVersion}\n");
+        
         this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds}ns\n");
 
         List<Program> programs = this.InstantiatePrograms();
