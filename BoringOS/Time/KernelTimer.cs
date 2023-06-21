@@ -16,8 +16,7 @@ public abstract class KernelTimer : IDisposable
     
     public long ElapsedTicks => Now - this.StartTicks;
     public long ElapsedMilliseconds => (long)(this.ElapsedTicks / 10_000.0);
-    public long ElapsedNanoseconds => (long)(this.ElapsedTicks / 1_000_000_000.0);
-    
+
 #pragma warning disable CA1816
     public virtual void Dispose()
 #pragma warning restore CA1816

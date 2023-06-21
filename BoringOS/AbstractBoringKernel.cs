@@ -52,7 +52,7 @@ public abstract partial class AbstractBoringKernel
 
         this._terminal.WriteString($"\nWelcome to {BoringVersionInformation.FullVersion}\n");
         
-        this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedNanoseconds}ns\n");
+        this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedMilliseconds}ms\n");
 
         List<Program> programs = this.InstantiatePrograms();
 

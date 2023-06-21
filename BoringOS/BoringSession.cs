@@ -30,10 +30,8 @@ public class BoringSession
     public readonly List<Program> Programs;
     
     private readonly KernelTimer _sysTimer;
-    public long ElapsedKernelNanoseconds => this._sysTimer.ElapsedNanoseconds;
     public long ElapsedKernelMilliseconds => this._sysTimer.ElapsedMilliseconds;
 
     private readonly KernelTimer _sessionTimer;
-    public long ElapsedSessionNanoseconds => this._sessionTimer.ElapsedNanoseconds;
     public long ElapsedSessionMilliseconds => this._sessionTimer.ElapsedMilliseconds;
 }
