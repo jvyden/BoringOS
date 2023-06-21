@@ -2,7 +2,6 @@ using System;
 using BoringOS.Network;
 using Cosmos.HAL;
 using Cosmos.HAL.Network;
-using Cosmos.System.Network;
 using Cosmos.System.Network.Config;
 using Cosmos.System.Network.IPv4;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
@@ -24,13 +23,14 @@ public class CosmosNetworkManager : NetworkManager
             return;
         }
 
+        Console.Write("    DHCP Initialization time: ");
+        
         int time;
         using (DHCPClient client = new())
         {
             time = client.SendDiscoverPacket();
         }
-
-        Console.Write("    DHCP Initialization time: ");
+        
         Console.Write(time);
         Console.WriteLine("ms");
         
@@ -54,8 +54,5 @@ public class CosmosNetworkManager : NetworkManager
             Console.Write("    Manually set IP to ");
             Console.WriteLine(ip);
         }
-
-        Console.WriteLine(network.Ready);
-        // network.Enable();
     }
 }

@@ -59,6 +59,7 @@ public class BoringShell
                 lineIndex = Math.Clamp(lineIndex + 1, 0, line.Length);
             else if (key.Key == ConsoleKey.Backspace)
             {
+                if(lineIndex == 0) continue;
                 line = line.Remove(lineIndex - 1, 1);
                 lineIndex--;
                 
@@ -113,9 +114,9 @@ public class BoringShell
         ProcessLine(line.Split(' '));
     }
 
-    private void ProcessLine(string[] args)
+    private void ProcessLine(IReadOnlyList<string> args)
     {
-        if (args.Length == 0) return;
+        if (args.Count == 0) return;
         string programName = args[0];
 
         Program? program = this._session.Programs.FirstOrDefault(p => p.Name == programName);
