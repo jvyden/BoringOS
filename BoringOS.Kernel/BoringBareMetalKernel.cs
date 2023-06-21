@@ -12,6 +12,7 @@ namespace BoringOS.Kernel;
 public class BoringBareMetalKernel : AbstractBoringKernel
 {
     protected override bool NeedsManualGarbageCollection => true;
+    internal bool UseSerial = false;
 
     protected override SystemInformation GetSystemInformation()
     {
@@ -63,6 +64,6 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         Console.WriteLine(message);
     }
 
-    // protected override ITerminal InstantiateTerminal() => new SerialTerminal();
+    protected override ITerminal InstantiateTerminal() => this.UseSerial ? new SerialTerminal() : new ConsoleTerminal();
     public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
 }

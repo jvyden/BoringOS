@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading;
+using Cosmos.System;
 using JetBrains.Annotations;
+using Console = System.Console;
 using Global = Cosmos.System.Global;
 
 namespace BoringOS.Kernel;
@@ -21,6 +24,14 @@ public class BoringCosmosKernel : Cosmos.System.Kernel
     {
         Console.WriteLine("Cosmos kernel initialized, jumping to BoringKernel");
         Console.ForegroundColor = ConsoleColor.Gray;
+
+        Thread.Sleep(25); // Sleep for a bit to wait for a key
+        if (KeyboardManager.TryReadKey(out KeyEvent key) && key.KeyChar == 's')
+        {
+            Console.WriteLine("Telling kernel to instantiate a serial terminal");
+            this._kernel.UseSerial = true;
+        }
+        
         this._kernel.BeforeRun();
     }
 
