@@ -66,7 +66,7 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         Console.WriteLine(message);
     }
 
-    protected override ITerminal InstantiateTerminal() => this.UseSerial ? new SerialTerminal() : new ConsoleTerminal();
+    protected override ITerminal InstantiateTerminal() => this.UseSerial ? new SerialTerminal() : new CanvasTerminal();
     public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
 }

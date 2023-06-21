@@ -36,11 +36,6 @@ public abstract partial class AbstractBoringKernel
 
     public void BeforeRun()
     {
-        Console.WriteLine("  Initializing terminal");
-        
-        // Set up terminal
-        this._terminal = this.InstantiateTerminal();
-
         Console.WriteLine("  Gathering SystemInformation");
         this._information = this.CollectSystemInfo();
 
@@ -56,6 +51,10 @@ public abstract partial class AbstractBoringKernel
         Console.WriteLine("  Initializing network");
         this._network = this.InstantiateNetworkManager();
         this._network.Initialize();
+        
+        // Set up terminal
+        Console.WriteLine("  Initializing terminal");
+        this._terminal = this.InstantiateTerminal();
 
         this._terminal.WriteString($"\nWelcome to {BoringVersionInformation.FullVersion}\n");
         
