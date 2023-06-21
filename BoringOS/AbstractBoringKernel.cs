@@ -68,7 +68,17 @@ public abstract partial class AbstractBoringKernel
         }
         catch(Exception e)
         {
-            this.WriteAll(e.ToString());
+            try
+            {
+                this.HandleCrash(e);
+            }
+            catch(Exception ee)
+            {
+                this.WriteAll("Could not properly handle crash. Halt.");
+                this.WriteAll(ee.ToString());
+                this.HaltKernel();
+                return;
+            }
         }
 
         if(this.NeedsManualGarbageCollection) 
@@ -87,5 +97,66 @@ public abstract partial class AbstractBoringKernel
     {
         this.KernelIsRunning = false;
         return true;
+    }
+
+    private void HandleCrash(Exception e)
+    {
+        this.WriteAll("Unhandled exception: " + e);
+        this.WriteAll("Crash occurred - please see console for instructions\n");
+        Console.BackgroundColor = ConsoleColor.DarkRed;
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Clear();
+        Console.SetCursorPosition(0, 0);
+        
+        Console.WriteLine(BoringVersionInformation.FullVersion);
+        
+        Console.WriteLine();
+        Console.WriteLine(e);
+        Console.WriteLine();
+        
+        Console.WriteLine("The above exception went entirely unhandled - the kernel had to step in.");
+        Console.Write("This is a particularly bad crash, as it should have been handled appropriately\nby the session.");
+        Console.Write(" Alas, it was not and you have now been brought here.\n");
+        
+        Console.WriteLine();
+        Console.WriteLine("If you do not know what you are doing, press 'H' to halt the system now.");
+        Console.WriteLine();
+        
+        while (true)
+        {
+            Console.Write("Press H to halt, D to take a memory dump, or C to continue: ");
+            char c = Console.ReadKey(true).KeyChar;
+
+            if (c == 'c')
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Clear();
+                Console.WriteLine("You have been dumped back to wherever you were.");
+                Console.WriteLine("If any problems persist, please halt and reboot the computer.");
+                Console.WriteLine();
+                break;
+            }
+
+            if (c == 'h')
+            {
+                this.HaltKernel();
+                break;
+            }
+            
+            if (c == 'd')
+            {
+                Console.WriteLine("Unimplemented");
+            }
+            
+            #if DEBUG
+            if (c == '0')
+            {
+                throw new Exception("Double crash!");
+            }
+            #endif
+
+            Console.WriteLine("Invalid key");
+        }
     }
 }

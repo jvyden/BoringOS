@@ -13,7 +13,8 @@
     <option name="EXECUTE_SCRIPT_FILE" value="true" />
     <envs />
     <method v="2">
-      <option name="Build Solution" enabled="true" />
+      <option name="CleanSolution" enabled="true" />
+      <option name="Build" default="false" projectName="BoringOS.Kernel" projectPath="file://$PROJECT_DIR$/BoringOS.Kernel/BoringOS.Kernel.csproj" />
     </method>
   </configuration>
 </component>
