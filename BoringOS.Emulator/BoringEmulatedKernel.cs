@@ -1,3 +1,6 @@
+using BoringOS.Emulator.Network;
+using BoringOS.Network;
+
 namespace BoringOS.Emulator;
 
 public class BoringEmulatedKernel : AbstractBoringKernel
@@ -21,7 +24,7 @@ public class BoringEmulatedKernel : AbstractBoringKernel
         Console.WriteLine(message);
     }
 
-    protected override SystemInformation GetSystemInformation()
+    protected override SystemInformation CollectSystemInfo()
     {
         return new SystemInformation
         {
@@ -31,4 +34,6 @@ public class BoringEmulatedKernel : AbstractBoringKernel
             CPUBrand = "Emulated Kernel"
         };
     }
+
+    protected override NetworkManager InstantiateNetworkManager() => new EmulatedNetworkManager();
 }

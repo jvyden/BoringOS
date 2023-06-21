@@ -1,6 +1,8 @@
 using System;
+using BoringOS.Kernel.Network;
 using BoringOS.Kernel.Terminal;
 using BoringOS.Kernel.Time;
+using BoringOS.Network;
 using BoringOS.Terminal;
 using BoringOS.Time;
 using Cosmos.Core;
@@ -14,7 +16,7 @@ public class BoringBareMetalKernel : AbstractBoringKernel
     protected override bool NeedsManualGarbageCollection => true;
     internal bool UseSerial = false;
 
-    protected override SystemInformation GetSystemInformation()
+    protected override SystemInformation CollectSystemInfo()
     {
         Console.WriteLine("    Acquiring vendor name and RAM");
         SystemInformation info = new()
@@ -66,4 +68,5 @@ public class BoringBareMetalKernel : AbstractBoringKernel
 
     protected override ITerminal InstantiateTerminal() => this.UseSerial ? new SerialTerminal() : new ConsoleTerminal();
     public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
+    protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
 }

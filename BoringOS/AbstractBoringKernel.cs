@@ -1,3 +1,4 @@
+using BoringOS.Network;
 using BoringOS.Programs;
 using BoringOS.Terminal;
 using BoringOS.Time;
@@ -10,6 +11,7 @@ public abstract partial class AbstractBoringKernel
     private BoringShell _shell = null!;
     private BoringSession _session = null!;
     private SystemInformation _information;
+    private NetworkManager _network;
     
     private KernelTimer _sysTimer = null!;
     
@@ -18,11 +20,12 @@ public abstract partial class AbstractBoringKernel
     public abstract long CollectGarbage();
     public abstract long GetAllocatedMemory();
     protected abstract void WriteAll(string message);
-    protected abstract SystemInformation GetSystemInformation();
+    protected abstract SystemInformation CollectSystemInfo();
 
     protected virtual ITerminal InstantiateTerminal() => new ConsoleTerminal();
     public virtual KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
-
+    protected abstract NetworkManager InstantiateNetworkManager();
+    
     private partial List<Program> InstantiatePrograms();
 
     public void OnBoot()
@@ -39,7 +42,7 @@ public abstract partial class AbstractBoringKernel
         this._terminal = this.InstantiateTerminal();
 
         Console.WriteLine("  Gathering SystemInformation");
-        this._information = GetSystemInformation();
+        this._information = this.CollectSystemInfo();
 
         Console.Write($"    CPU: {this._information.CPUVendor} {this._information.CPUBrand}, ");
         Console.WriteLine($"{this._information.MemoryCountMegabytes}MB of upper memory");
@@ -49,6 +52,10 @@ public abstract partial class AbstractBoringKernel
             long freed = this.CollectGarbage();
             Console.WriteLine($"  Freed {freed / 1048576}MB of memory");
         }
+        
+        Console.WriteLine("  Initializing network");
+        this._network = this.InstantiateNetworkManager();
+        this._network.Initialize();
 
         this._terminal.WriteString($"\nWelcome to {BoringVersionInformation.FullVersion}\n");
         

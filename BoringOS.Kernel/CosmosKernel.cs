@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Threading;
 using Cosmos.System;
+using Cosmos.System.Network.IPv4.UDP.DHCP;
 using JetBrains.Annotations;
 using Console = System.Console;
 using Global = Cosmos.System.Global;
 
 namespace BoringOS.Kernel;
 
-public class BoringCosmosKernel : Cosmos.System.Kernel
+public class CosmosKernel : Cosmos.System.Kernel
 {
     private BoringBareMetalKernel _kernel = null!;
 
     protected override void OnBoot()
     {
         Global.Init(this.GetTextScreen(), false, true, false, false);
-        
+
         _kernel = new BoringBareMetalKernel();
         this._kernel.OnBoot();
     }
