@@ -16,7 +16,7 @@ public class GarbageCollectProgram : Program
         long freed = session.Kernel.CollectGarbage();
         long ms = timer.ElapsedMilliseconds;
         
-        session.Terminal.WriteString($"Freed {freed / 1048576}MB of memory\n");
+        session.Terminal.WriteString($"Freed {freed / 1024}KB of memory\n");
         session.Terminal.WriteString($"Took {ms}ms\n");
         return 0;
     }

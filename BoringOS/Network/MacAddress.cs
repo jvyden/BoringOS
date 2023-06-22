@@ -2,6 +2,8 @@ namespace BoringOS.Network;
 
 public readonly struct MacAddress
 {
+    public static readonly MacAddress Default = new(0, 0, 0, 0, 0, 0);
+    
     private readonly byte _a;
     private readonly byte _b;
     private readonly byte _c;

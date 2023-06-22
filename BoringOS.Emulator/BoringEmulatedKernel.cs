@@ -28,8 +28,7 @@ public class BoringEmulatedKernel : AbstractBoringKernel
     {
         return new SystemInformation
         {
-            MemoryCountMegabytes = 1,
-            EstimatedCycleSpeed = -1,
+            MemoryCountKilobytes = 1024,
             CPUVendor = "EmuEmuEmuEmu",
             CPUBrand = "Emulated Kernel"
         };

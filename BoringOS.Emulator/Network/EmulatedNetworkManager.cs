@@ -6,6 +6,6 @@ public class EmulatedNetworkManager : NetworkManager
 {
     protected override void InitializeInternal()
     {
-        // No initialization required.
+        this.AddAdapter(new EmulatedNetworkAdapter("lo", MacAddress.Default, new IpAddress(127, 0, 0, 1)));
     }
 }

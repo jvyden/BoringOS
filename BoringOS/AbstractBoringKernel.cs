@@ -42,21 +42,21 @@ public abstract partial class AbstractBoringKernel
         this.SystemInformation = this.CollectSystemInfo();
 
         Console.Write($"    CPU: {this.SystemInformation.CPUVendor} {this.SystemInformation.CPUBrand}, ");
-        Console.WriteLine($"{this.SystemInformation.MemoryCountMegabytes}MB of upper memory");
+        Console.WriteLine($"{this.SystemInformation.MemoryCountKilobytes / 1024}MB of memory");
 
-        if (this.NeedsManualGarbageCollection)
-        {
-            long freed = this.CollectGarbage();
-            Console.WriteLine($"  Freed {freed / 1048576}MB of memory");
-        }
-        
         Console.WriteLine("  Initializing network");
         this.Network = this.InstantiateNetworkManager();
         this.Network.Initialize();
-        
+
         // Set up terminal
         Console.WriteLine("  Initializing terminal");
         this._terminal = this.InstantiateTerminal();
+        
+        if (this.NeedsManualGarbageCollection)
+        {
+            long freed = this.CollectGarbage();
+            Console.WriteLine($"  Freed {freed / 1024}KB of memory");
+        }
         
         this._terminal.WriteChar('\n');
         this._terminal.WriteString($"Welcome to {BoringVersionInformation.FullVersion}\n");
