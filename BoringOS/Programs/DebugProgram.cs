@@ -20,7 +20,7 @@ public class DebugProgram : Program
 
     private static void KeyLog(ITerminal terminal)
     {
-        Console.WriteLine("Press enter to exit.");
+        terminal.WriteString("Press enter to exit.\n");
         
         while (true)
         {
