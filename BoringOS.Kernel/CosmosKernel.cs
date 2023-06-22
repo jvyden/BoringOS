@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Threading;
 using BoringOS.Kernel.Terminal;
 using Cosmos.System;
 using JetBrains.Annotations;
-using Zarlo.Cosmos.Threading;
-using Zarlo.Cosmos.Threading.Core.Processing;
 using Console = System.Console;
 using Global = Cosmos.System.Global;
-using SystemThread = System.Threading.Thread;
 
 namespace BoringOS.Kernel;
 
@@ -17,8 +15,6 @@ public class CosmosKernel : Cosmos.System.Kernel
     protected override void OnBoot()
     {
         Global.Init(this.GetTextScreen(), false, true, false, false);
-        
-        ProcessorScheduler.Initialize();
 
         _kernel = new BoringBareMetalKernel();
         this._kernel.OnBoot();
@@ -45,24 +41,17 @@ public class CosmosKernel : Cosmos.System.Kernel
         Console.WriteLine("Cosmos kernel initialized, jumping to BoringKernel");
         Console.ForegroundColor = ConsoleColor.Gray;
 
-        Thread.Sleep(25); // Sleep for a bit to wait for a key
-        if (KeyboardManager.TryReadKey(out KeyEvent key)) 
-            HandleStartupKey(key.KeyChar);
+        // Thread.Sleep(25); // Sleep for a bit to wait for a key
+        // if (KeyboardManager.TryReadKey(out KeyEvent key)) 
+            // HandleStartupKey(key.KeyChar);
+
+        if (KeyboardManager.ShiftPressed)
+        {
+            char key = Console.ReadKey(true).KeyChar;
+            HandleStartupKey(key);
+        }
 
         this._kernel.BeforeRun();
-        
-        Console.WriteLine("!! Starting test thread !!");
-        Process process = new(() =>
-        {
-            int i = 0;
-            while (true)
-            {
-                Console.WriteLine("Thread tick " + i++);
-                Thread.Sleep(1000);
-            }
-        });
-                
-        process.Start();
     }
 
     [UsedImplicitly]

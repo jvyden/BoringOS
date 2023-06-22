@@ -1,4 +1,5 @@
 using BoringOS.Terminal;
+using BoringOS.Threading;
 
 namespace BoringOS.Programs;
 
@@ -34,6 +35,19 @@ public class DebugProgram : Program
         }
     }
 
+    private static void SpawnThread(ITerminal terminal, AbstractProcessManager processManager)
+    {
+        processManager.StartProcess(() =>
+        {
+            int i = 0;
+            while (true)
+            {
+                terminal.WriteString($"Thread tick {i++}\n");
+                processManager.Sleep(1000);
+            }
+        });
+    }
+
     public override byte Invoke(string[] args, BoringSession session)
     {
         if (args.Length == 0) return ShowHelp(session.Terminal);
@@ -49,6 +63,9 @@ public class DebugProgram : Program
                 return (byte)ushort.Parse(args[1].Trim());
             case "keylog":
                 KeyLog(session.Terminal);
+                break;
+            case "thread":
+                SpawnThread(session.Terminal, session.Kernel.ProcessManager);
                 break;
         }
 

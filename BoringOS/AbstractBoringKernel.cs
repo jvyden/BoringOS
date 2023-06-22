@@ -1,6 +1,7 @@
 using BoringOS.Network;
 using BoringOS.Programs;
 using BoringOS.Terminal;
+using BoringOS.Threading;
 using BoringOS.Time;
 
 namespace BoringOS;
@@ -23,12 +24,14 @@ public abstract partial class AbstractBoringKernel
     protected virtual ITerminal InstantiateTerminal() => new ConsoleTerminal();
     public virtual KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
     protected abstract NetworkManager InstantiateNetworkManager();
+    protected abstract AbstractProcessManager InstantiateProcessManager();
     
     private partial List<Program> InstantiatePrograms();
 
     public long ElapsedMilliseconds => this._sysTimer.ElapsedMilliseconds;
     public SystemInformation SystemInformation { get; private set; }
     public NetworkManager Network { get; private set; } = null!;
+    public AbstractProcessManager ProcessManager { get; private set; } = null!;
 
     public void OnBoot()
     {
@@ -47,6 +50,10 @@ public abstract partial class AbstractBoringKernel
         Console.WriteLine("  Initializing network");
         this.Network = this.InstantiateNetworkManager();
         this.Network.Initialize();
+        
+        Console.WriteLine("  Initializing threading");
+        this.ProcessManager = this.InstantiateProcessManager();
+        this.ProcessManager.Initialize();
 
         // Set up terminal
         Console.WriteLine("  Initializing terminal");

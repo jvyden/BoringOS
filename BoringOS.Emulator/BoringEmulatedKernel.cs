@@ -1,5 +1,7 @@
 using BoringOS.Emulator.Network;
+using BoringOS.Emulator.Threading;
 using BoringOS.Network;
+using BoringOS.Threading;
 
 namespace BoringOS.Emulator;
 
@@ -37,4 +39,5 @@ public class BoringEmulatedKernel : AbstractBoringKernel
     }
 
     protected override NetworkManager InstantiateNetworkManager() => new EmulatedNetworkManager();
+    protected override AbstractProcessManager InstantiateProcessManager() => new TaskProcessManager();
 }

@@ -1,9 +1,11 @@
 using System;
 using BoringOS.Kernel.Network;
 using BoringOS.Kernel.Terminal;
+using BoringOS.Kernel.Threading;
 using BoringOS.Kernel.Time;
 using BoringOS.Network;
 using BoringOS.Terminal;
+using BoringOS.Threading;
 using BoringOS.Time;
 using Cosmos.Core;
 using Cosmos.Core.Memory;
@@ -69,4 +71,5 @@ public class BoringBareMetalKernel : AbstractBoringKernel
     // public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
     public override KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
+    protected override AbstractProcessManager InstantiateProcessManager() => new ZarloProcessManager();
 }
