@@ -15,7 +15,11 @@ namespace BoringOS.Kernel;
 public class BoringBareMetalKernel : AbstractBoringKernel
 {
     protected override bool NeedsManualGarbageCollection => true;
+#if VBE
+    internal TerminalType TerminalType = TerminalType.Canvas;
+#else
     internal TerminalType TerminalType = TerminalType.Console;
+#endif
 
     protected override SystemInformation CollectSystemInfo()
     {

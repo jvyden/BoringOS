@@ -25,12 +25,17 @@ public class CosmosKernel : Cosmos.System.Kernel
         switch (c)
         {
             case 's':
-                Console.WriteLine("!! Will boot into serial terminal !! ");
+                Console.WriteLine("!! Will boot into serial terminal !!");
                 this._kernel.TerminalType = TerminalType.Serial;
                 break;
             case 'c':
-                Console.WriteLine("!! Will boot into canvas terminal !! ");
+#if VBE
+                Console.WriteLine("!! Will boot into console terminal !!");
+                this._kernel.TerminalType = TerminalType.Console;
+#else
+                Console.WriteLine("!! Will boot into canvas terminal !!");
                 this._kernel.TerminalType = TerminalType.Canvas;
+#endif
                 break;
         }
     }
