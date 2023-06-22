@@ -20,10 +20,7 @@ public class CanvasTerminal : ITerminal
 
     private const int CharHeight = 16;
     private const int CharWidth = 8;
-    
-    // private int CharHeight => this._font.Height;
-    // private int CharWidth => this._font.Width;
-    
+
     public CanvasTerminal()
     {
         Mode mode = new(800, 600, ColorDepth.ColorDepth32);
@@ -31,7 +28,7 @@ public class CanvasTerminal : ITerminal
         this._font = Convert.FromBase64String(Font);
 
         if (VMTools.IsVMWare) this._canvas = new SVGAIICanvas(mode);
-        else if (Multiboot2.IsVBEAvailable) this._canvas = new VBECanvas(mode);
+        else if (Multiboot2.IsVBEAvailable) this._canvas = new VBECanvas();
         else this._canvas = new VGACanvas();
 
         this.ClearScreen();
@@ -77,7 +74,7 @@ public class CanvasTerminal : ITerminal
         this.CursorY = y;
     }
 
-    public void WriteChar(char c)
+    public void WriteChar(char c, bool display)
     {
         if (c == '\n')
         {
@@ -94,21 +91,29 @@ public class CanvasTerminal : ITerminal
         
         this.DrawChar(c, Color.White, this.CursorX * CharWidth, this.CursorY * CharHeight);
         this.CursorX++;
+        if(display) this._canvas.Display();
     }
 
+    public void WriteChar(char c) => WriteChar(c, true);
+    
     public void WriteString(string str)
     {
-        foreach (char c in str) this.WriteChar(c);
+        foreach (char c in str) this.WriteChar(c, false);
+        this._canvas.Display();
     }
 
     public void ClearLine(int skip = 0)
     {
+        int x = this.CursorX * CharWidth;
+        int y = this.CursorY * CharHeight;
         
+        this._canvas.DrawFilledRectangle(Color.Black, x, y, this.Width - x, CharHeight);
     }
 
     public void ClearScreen()
     {
         this._canvas.Clear();
         this.SetCursorPosition(0, 0);
+        this._canvas.Display();
     }
 } 
