@@ -36,20 +36,6 @@ public class CosmosKernel : Cosmos.System.Kernel
                 Console.WriteLine("!! Will boot into canvas terminal !!");
                 this._kernel.TerminalType = TerminalType.Canvas;
                 break;
-            case 't':
-                Console.WriteLine("!! Starting test thread !!");
-                Process process = new(() =>
-                {
-                    int i = 0;
-                    while (true)
-                    {
-                        Console.WriteLine("Thread tick " + i++);
-                        Thread.Sleep(1000);
-                    }
-                });
-                
-                process.Start();
-                break;
         }
     }
 
@@ -60,13 +46,23 @@ public class CosmosKernel : Cosmos.System.Kernel
         Console.ForegroundColor = ConsoleColor.Gray;
 
         Thread.Sleep(25); // Sleep for a bit to wait for a key
-        // if (KeyboardManager.TryReadKey(out KeyEvent key)) 
-            // HandleStartupKey(key.KeyChar);
+        if (KeyboardManager.TryReadKey(out KeyEvent key)) 
+            HandleStartupKey(key.KeyChar);
 
         this._kernel.BeforeRun();
         
-        Console.Clear();
-        HandleStartupKey('t');
+        Console.WriteLine("!! Starting test thread !!");
+        Process process = new(() =>
+        {
+            int i = 0;
+            while (true)
+            {
+                Console.WriteLine("Thread tick " + i++);
+                Thread.Sleep(1000);
+            }
+        });
+                
+        process.Start();
     }
 
     [UsedImplicitly]
