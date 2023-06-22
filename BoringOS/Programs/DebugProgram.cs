@@ -38,20 +38,18 @@ public class DebugProgram : Program
     {
         if (args.Length == 0) return ShowHelp(session.Terminal);
 
-        if (args[0] == "crash")
+        switch (args[0])
         {
-            throw new Exception("Manually triggered exception");
-        }
-
-        if(args[0] == "ret")
-        {
-            if (args.Length < 2) return ShowHelp(session.Terminal);
-            return (byte)ushort.Parse(args[1].Trim());
-        }
-
-        if (args[0] == "keylog")
-        {
-            KeyLog(session.Terminal);
+            case "ret" when args.Length < 2:
+            default:
+                return ShowHelp(session.Terminal);
+            case "crash":
+                throw new Exception("Manually triggered exception");
+            case "ret":
+                return (byte)ushort.Parse(args[1].Trim());
+            case "keylog":
+                KeyLog(session.Terminal);
+                break;
         }
 
         return 0;
