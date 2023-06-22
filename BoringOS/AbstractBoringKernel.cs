@@ -10,11 +10,9 @@ public abstract partial class AbstractBoringKernel
     private ITerminal _terminal = null!;
     private BoringShell _shell = null!;
     private BoringSession _session = null!;
-    private SystemInformation _information;
-    private NetworkManager _network;
-    
+
     private KernelTimer _sysTimer = null!;
-    
+
     protected abstract bool NeedsManualGarbageCollection { get; }
     
     public abstract long CollectGarbage();
@@ -28,6 +26,10 @@ public abstract partial class AbstractBoringKernel
     
     private partial List<Program> InstantiatePrograms();
 
+    public long ElapsedMilliseconds => this._sysTimer.ElapsedMilliseconds;
+    public SystemInformation SystemInformation { get; private set; }
+    public NetworkManager Network { get; private set; } = null!;
+
     public void OnBoot()
     {
         this._sysTimer = this.InstantiateTimer();
@@ -37,10 +39,10 @@ public abstract partial class AbstractBoringKernel
     public void BeforeRun()
     {
         Console.WriteLine("  Gathering SystemInformation");
-        this._information = this.CollectSystemInfo();
+        this.SystemInformation = this.CollectSystemInfo();
 
-        Console.Write($"    CPU: {this._information.CPUVendor} {this._information.CPUBrand}, ");
-        Console.WriteLine($"{this._information.MemoryCountMegabytes}MB of upper memory");
+        Console.Write($"    CPU: {this.SystemInformation.CPUVendor} {this.SystemInformation.CPUBrand}, ");
+        Console.WriteLine($"{this.SystemInformation.MemoryCountMegabytes}MB of upper memory");
 
         if (this.NeedsManualGarbageCollection)
         {
@@ -49,20 +51,20 @@ public abstract partial class AbstractBoringKernel
         }
         
         Console.WriteLine("  Initializing network");
-        this._network = this.InstantiateNetworkManager();
-        this._network.Initialize();
+        this.Network = this.InstantiateNetworkManager();
+        this.Network.Initialize();
         
         // Set up terminal
         Console.WriteLine("  Initializing terminal");
         this._terminal = this.InstantiateTerminal();
-
-        this._terminal.WriteString($"\nWelcome to {BoringVersionInformation.FullVersion}\n");
         
+        this._terminal.WriteChar('\n');
+        this._terminal.WriteString($"Welcome to {BoringVersionInformation.FullVersion}\n");
         this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedMilliseconds}ms\n");
 
         List<Program> programs = this.InstantiatePrograms();
 
-        this._session = new BoringSession(this._terminal, this._information, this._sysTimer, programs, this);
+        this._session = new BoringSession(this._terminal, programs, this);
         this._shell = new BoringShell(this._session);
     }
 
@@ -107,6 +109,7 @@ public abstract partial class AbstractBoringKernel
 
     private void HandleCrash(Exception e)
     {
+        // TODO: use terminal if possible
         this.WriteAll("Unhandled exception: " + e);
         this.WriteAll("Crash occurred - please see console for instructions\n");
         Console.BackgroundColor = ConsoleColor.DarkRed;

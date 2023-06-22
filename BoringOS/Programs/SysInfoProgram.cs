@@ -12,8 +12,8 @@ public class SysInfoProgram : Program
         
         session.Terminal.WriteString(BoringVersionInformation.FullVersion);
         session.Terminal.WriteChar('\n');
-        session.Terminal.WriteString($"CPU: {session.SystemInformation.CPUVendor} {session.SystemInformation.CPUBrand}\n");
-        session.Terminal.WriteString($"MEM: {allocatedMemory}MB/{session.SystemInformation.MemoryCountMegabytes}MB\n");
+        session.Terminal.WriteString($"CPU: {session.Kernel.SystemInformation.CPUVendor} {session.Kernel.SystemInformation.CPUBrand}\n");
+        session.Terminal.WriteString($"MEM: {allocatedMemory}MB/{session.Kernel.SystemInformation.MemoryCountMegabytes}MB\n");
         return 0;
     }
 }

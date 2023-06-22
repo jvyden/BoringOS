@@ -6,14 +6,12 @@ namespace BoringOS;
 
 public class BoringSession
 {
-    public BoringSession(ITerminal terminal, SystemInformation systemInformation, KernelTimer sysTimer, List<Program> programs, AbstractBoringKernel kernel)
+    public BoringSession(ITerminal terminal, List<Program> programs, AbstractBoringKernel kernel)
     {
         this.Terminal = terminal;
-        this.SystemInformation = systemInformation;
-        this.Kernel = kernel;
         this.Programs = programs;
-        this._sysTimer = sysTimer;
-        
+        this.Kernel = kernel;
+
         this._sessionTimer = kernel.InstantiateTimer();
         this._sessionTimer.Start();
 
@@ -25,13 +23,10 @@ public class BoringSession
     public uint SessionId { get; private init; }
 
     public readonly ITerminal Terminal;
-    public readonly SystemInformation SystemInformation;
     public readonly AbstractBoringKernel Kernel;
     public readonly List<Program> Programs;
     
-    private readonly KernelTimer _sysTimer;
-    public long ElapsedKernelMilliseconds => this._sysTimer.ElapsedMilliseconds;
 
     private readonly KernelTimer _sessionTimer;
-    public long ElapsedSessionMilliseconds => this._sessionTimer.ElapsedMilliseconds;
+    public long ElapsedMilliseconds => this._sessionTimer.ElapsedMilliseconds;
 }

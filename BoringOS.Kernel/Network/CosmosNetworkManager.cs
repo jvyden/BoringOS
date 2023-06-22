@@ -35,11 +35,13 @@ public class CosmosNetworkManager : NetworkManager
         Console.WriteLine("ms");
         
         NetworkDevice network = NetworkDevice.GetDeviceByName("eth0");
+        Address address;
         
         if (NetworkConfiguration.CurrentNetworkConfig != null && time != -1)
         {
             Console.Write("    Current address: ");
             Console.WriteLine(NetworkConfiguration.CurrentAddress);
+            address = NetworkConfiguration.CurrentAddress;
         }
         else
         {
@@ -53,6 +55,9 @@ public class CosmosNetworkManager : NetworkManager
             
             Console.Write("    Manually set IP to ");
             Console.WriteLine(ip);
+            address = ip;
         }
+        
+        this.AddAdapter(new CosmosNetworkAdapter(network, address));
     }
 }
