@@ -5,7 +5,7 @@ using Global = Cosmos.HAL.Global;
 
 namespace BoringOS.Kernel.Time;
 
-public class CPUKernelTimer : KernelTimer
+public class PITKernelTimer : KernelTimer
 {
     private const long OneSecondNs = 1_000_000_000;
     private const long OneSecondTs = 10_000;

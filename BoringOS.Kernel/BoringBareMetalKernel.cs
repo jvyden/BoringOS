@@ -18,6 +18,7 @@ public class BoringBareMetalKernel : AbstractBoringKernel
 {
     protected override bool NeedsManualGarbageCollection => true;
     internal TerminalType TerminalType = TerminalType.Console;
+    public bool ThreadingEnabled = true;
 
     protected override SystemInformation CollectSystemInfo()
     {
@@ -67,9 +68,21 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         TerminalType.Canvas => new CanvasTerminal(),
         _ => throw new ArgumentOutOfRangeException()
     };
-    
-    // public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
-    public override KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
+
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
-    protected override AbstractProcessManager InstantiateProcessManager() => new ZarloProcessManager();
+    protected override AbstractProcessManager InstantiateProcessManager()
+    {
+        if (this.ThreadingEnabled)
+            return new ZarloProcessManager();
+        
+        return new FakeProcessManager();
+    }
+    
+    public override KernelTimer InstantiateTimer()
+    {
+        if (this.ThreadingEnabled) 
+            return new UtcNowKernelTimer(); // Use RTC to avoid usage of PIT
+
+        return new PITKernelTimer();
+    }
 }

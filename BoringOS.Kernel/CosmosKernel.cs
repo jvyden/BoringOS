@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using BoringOS.Kernel.Terminal;
 using Cosmos.System;
 using JetBrains.Annotations;
@@ -32,6 +31,13 @@ public class CosmosKernel : Cosmos.System.Kernel
                 Console.WriteLine("!! Will boot into canvas terminal !!");
                 this._kernel.TerminalType = TerminalType.Canvas;
                 break;
+            case 't':
+                Console.WriteLine("!! Disabling threading !!");
+                this._kernel.ThreadingEnabled = false;
+                break;
+            default:
+                Console.WriteLine($"!!! Unknown startup key {c} !!!");
+                break;
         }
     }
 
@@ -40,16 +46,17 @@ public class CosmosKernel : Cosmos.System.Kernel
     {
         Console.WriteLine("Cosmos kernel initialized, jumping to BoringKernel");
         Console.ForegroundColor = ConsoleColor.Gray;
-
-        // Thread.Sleep(25); // Sleep for a bit to wait for a key
-        // if (KeyboardManager.TryReadKey(out KeyEvent key)) 
-            // HandleStartupKey(key.KeyChar);
-
-        if (KeyboardManager.ShiftPressed)
+        
+        // Wait for key without PIT to avoid breaking multi-threading
+        // Very stupid but it works
+        // TODO: Replace with noop?
+        for (int i = 0; i < 10_000; i++)
         {
-            char key = Console.ReadKey(true).KeyChar;
-            HandleStartupKey(key);
+            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
         }
+
+        if (KeyboardManager.TryReadKey(out KeyEvent key)) 
+            HandleStartupKey(key.KeyChar);
 
         this._kernel.BeforeRun();
     }
