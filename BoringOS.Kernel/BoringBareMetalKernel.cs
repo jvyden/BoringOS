@@ -47,7 +47,7 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         return allocatedBefore - GCImplementation.GetUsedRAM();
     }
 
-    public override long GetAllocatedMemory()
+    public override long GetUsedMemory()
     {
         return GCImplementation.GetUsedRAM();
     }

@@ -16,7 +16,7 @@ public abstract partial class AbstractBoringKernel
     protected abstract bool NeedsManualGarbageCollection { get; }
     
     public abstract long CollectGarbage();
-    public abstract long GetAllocatedMemory();
+    public abstract long GetUsedMemory();
     protected abstract void WriteAll(string message);
     protected abstract SystemInformation CollectSystemInfo();
 

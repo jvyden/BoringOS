@@ -14,7 +14,7 @@ public class BoringEmulatedKernel : AbstractBoringKernel
         return allocatedBefore - GC.GetTotalMemory(false);
     }
 
-    public override long GetAllocatedMemory()
+    public override long GetUsedMemory()
     {
         return GC.GetTotalMemory(false);
     }
@@ -26,9 +26,11 @@ public class BoringEmulatedKernel : AbstractBoringKernel
 
     protected override SystemInformation CollectSystemInfo()
     {
+        int memoryKilobytes = (int)(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1_024);
+        
         return new SystemInformation
         {
-            MemoryCountKilobytes = 1024,
+            MemoryCountKilobytes = (uint)memoryKilobytes,
             CPUVendor = "EmuEmuEmuEmu",
             CPUBrand = "Emulated Kernel"
         };

@@ -8,7 +8,7 @@ public class SysInfoProgram : Program
 
     public override byte Invoke(string[] args, BoringSession session)
     {
-        long allocatedMemory = session.Kernel.GetAllocatedMemory() / 1024;
+        long allocatedMemory = session.Kernel.GetUsedMemory() / 1024;
         
         session.Terminal.WriteString(BoringVersionInformation.FullVersion);
         session.Terminal.WriteChar('\n');
