@@ -66,6 +66,7 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         _ => throw new ArgumentOutOfRangeException()
     };
     
-    public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
+    // public override KernelTimer InstantiateTimer() => new CPUKernelTimer();
+    public override KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
 }

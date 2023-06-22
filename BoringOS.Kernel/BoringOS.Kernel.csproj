@@ -19,6 +19,7 @@
     <ItemGroup>
         <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604" />
+        <PackageReference Include="Cosmos.Plugs" Version="0.1.0-localbuild" />
         <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Zarlo.Cosmos.Threading" Version="0.1.1-alpha.36" />
         <PackageReference Include="Zarlo.Cosmos.Threading.Plugs" Version="0.1.1-alpha.36" />
