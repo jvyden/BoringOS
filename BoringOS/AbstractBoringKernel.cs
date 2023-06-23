@@ -39,9 +39,9 @@ public abstract partial class AbstractBoringKernel
     {
         this.ProcessManager.StartProcess(() =>
         {
-            this.KernelTerminal.WriteChar('\n');
-            this.KernelTerminal.WriteString($"Welcome to {BoringVersionInformation.FullVersion}\n");
-            this.KernelTerminal.WriteString($"  Boot took {this._sysTimer.ElapsedMilliseconds}ms\n");
+            terminal.WriteChar('\n');
+            terminal.WriteString($"Welcome to {BoringVersionInformation.FullVersion}\n");
+            terminal.WriteString($"  Boot took {this._sysTimer.ElapsedMilliseconds}ms\n");
             
             BoringSession session = new BoringSession(terminal, programs, this);
             BoringShell shell = new BoringShell(session);
