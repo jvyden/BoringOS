@@ -17,7 +17,11 @@ namespace BoringOS.Kernel;
 public class BoringBareMetalKernel : AbstractBoringKernel
 {
     protected override bool NeedsManualGarbageCollection => true;
+#if VBE
+    internal TerminalType TerminalType = TerminalType.Canvas;
+#else
     internal TerminalType TerminalType = TerminalType.Console;
+#endif
     public bool ThreadingEnabled = true;
 
     protected override SystemInformation CollectSystemInfo()
@@ -59,6 +63,21 @@ public class BoringBareMetalKernel : AbstractBoringKernel
     {
         SerialPort.SendString(message);
         Console.WriteLine(message);
+    }
+
+    protected override void PrintException(Exception e)
+    {
+        while (true)
+        {
+            Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+            if (e.InnerException != null)
+            {
+                e = e.InnerException;
+                continue;
+            }
+
+            break;
+        }
     }
 
     protected override ITerminal InstantiateTerminal() => TerminalType switch

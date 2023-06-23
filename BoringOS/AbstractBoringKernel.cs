@@ -83,17 +83,17 @@ public abstract partial class AbstractBoringKernel
         }
         catch(Exception e)
         {
-            try
-            {
+            // try
+            // {
                 this.HandleCrash(e);
-            }
-            catch(Exception ee)
-            {
-                this.WriteAll("Could not properly handle crash. Halt.");
-                this.WriteAll(ee.ToString());
-                this.HaltKernel();
-                return;
-            }
+            // }
+            // catch(Exception ee)
+            // {
+            //     this.WriteAll("Could not properly handle crash. Halt.");
+            //     this.WriteAll(ee.ToString());
+            //     this.HaltKernel();
+            //     return;
+            // }
         }
 
         if(this.NeedsManualGarbageCollection) 
@@ -114,6 +114,21 @@ public abstract partial class AbstractBoringKernel
         return true;
     }
 
+    protected virtual void PrintException(Exception e)
+    {
+        while (true)
+        {
+            Console.WriteLine(e);
+            if (e.InnerException != null)
+            {
+                e = e.InnerException;
+                continue;
+            }
+
+            break;
+        }
+    }
+
     private void HandleCrash(Exception e)
     {
         // TODO: use terminal if possible
@@ -127,7 +142,7 @@ public abstract partial class AbstractBoringKernel
         Console.WriteLine(BoringVersionInformation.FullVersion);
         
         Console.WriteLine();
-        Console.WriteLine(e);
+        PrintException(e);
         Console.WriteLine();
         
         Console.WriteLine("The above exception went entirely unhandled - the kernel had to step in.");
@@ -165,12 +180,13 @@ public abstract partial class AbstractBoringKernel
                 Console.WriteLine("Unimplemented");
             }
             
-            #if DEBUG
+#if DEBUG
             if (c == '0')
             {
-                throw new Exception("Double crash!");
+                Console.WriteLine("Crashing again on purpose");
+                throw e;
             }
-            #endif
+#endif
 
             Console.WriteLine("Invalid key");
         }

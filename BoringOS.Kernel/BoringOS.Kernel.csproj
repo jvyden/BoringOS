@@ -8,6 +8,9 @@
         <TargetsForTfmSpecificContentInPackage>true</TargetsForTfmSpecificContentInPackage>
         <Nullable>enable</Nullable>
         <LangVersion>11</LangVersion>
+        <Configurations>Debug;Release;DebugVBE</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -15,6 +18,12 @@
         <RemoteDebugEnabled>False</RemoteDebugEnabled>
         <DebugEnabled>False</DebugEnabled>
     </PropertyGroup>
+    
+    <PropertyGroup Condition="$(Configuration) == 'DebugVBE'">
+        <DefineConstants>Debug;TRACE;VBE</DefineConstants>
+        <CompileVBEMultiboot>true</CompileVBEMultiboot>
+    </PropertyGroup>
+    
 
     <ItemGroup>
         <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604" />

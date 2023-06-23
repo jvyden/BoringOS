@@ -3,6 +3,7 @@ namespace BoringOS.Network;
 public readonly struct IpAddress
 {
     public static readonly IpAddress Default = new(0, 0, 0, 0);
+    public static readonly IpAddress Local = new(127, 0, 0, 1);
     
     private readonly byte _a;
     private readonly byte _b;
@@ -17,9 +18,52 @@ public readonly struct IpAddress
         this._d = d;
     }
 
-    public override string ToString()
+    public IpAddress(ReadOnlySpan<char> ip)
+    {
+        int offset = 0;
+
+        offset += ParseSection(ip[offset..], out _a);
+        offset += ParseSection(ip[offset..], out _b);
+        offset += ParseSection(ip[offset..], out _c);
+        ParseSection(ip[offset..], out _d, true);
+    }
+
+    private static int ParseSection(ReadOnlySpan<char> ip, out byte b, bool last = false)
     {
         const char separator = '.'; 
+        const int maxSectionLength = 3; // "255".Length
+        
+        Span<char> section = stackalloc char[maxSectionLength];
+        int i = 0;
+
+        for (int charIndex = 0; charIndex < ip.Length; charIndex++)
+        {
+            char c = ip[charIndex];
+            if (c != separator)
+            {
+                if (i >= maxSectionLength) throw new FormatException("Invalid IP address");
+                section[i] = c;
+            }
+            else
+            {
+                b = byte.Parse(section);
+                // b = 1;
+                return i + 1;
+            }
+
+            i++;
+        }
+
+        if (!last) throw new FormatException("Section contains no characters");
+        
+        b = byte.Parse(section);
+        // b = 1;
+        return 0;
+    }
+
+    public override string ToString()
+    {
+        const char separator = '.';
         const int maxLength = 15; // "255.255.255.255".Length
         Span<char> address = stackalloc char[maxLength];
 

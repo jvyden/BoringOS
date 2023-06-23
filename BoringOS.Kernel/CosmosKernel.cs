@@ -1,5 +1,6 @@
 ﻿using System;
 using BoringOS.Kernel.Terminal;
+using Cosmos.Debug.Kernel;
 using Cosmos.System;
 using JetBrains.Annotations;
 using Console = System.Console;
@@ -13,6 +14,7 @@ public class CosmosKernel : Cosmos.System.Kernel
 
     protected override void OnBoot()
     {
+        DebuggerFactory.WriteToConsole = true;
         Global.Init(this.GetTextScreen(), false, true, false, false);
 
         _kernel = new BoringBareMetalKernel();
@@ -28,8 +30,13 @@ public class CosmosKernel : Cosmos.System.Kernel
                 this._kernel.TerminalType = TerminalType.Serial;
                 break;
             case 'c':
+#if VBE
+                Console.WriteLine("!! Will boot into console terminal !!");
+                this._kernel.TerminalType = TerminalType.Console;
+#else
                 Console.WriteLine("!! Will boot into canvas terminal !!");
                 this._kernel.TerminalType = TerminalType.Canvas;
+#endif
                 break;
             case 't':
                 Console.WriteLine("!! Disabling threading !!");

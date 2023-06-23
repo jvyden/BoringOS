@@ -14,6 +14,11 @@ A version of the kernel in the .NET runtime, intended for quick, iterative devel
 
 An actual implementation of the kernel on bare metal. Run with `run.sh` on UNIX or through the COSMOS Visual Studio extension.
 
-Supports console mode, but VT100 serial mode can be enabled by holding 's' on startup.
+### Startup keys
+
+When BoringOS starts up, you can hold a key down to trigger different behaviours in the kernel, similar to Apple computers.
+
+- `s`: Load a serial VT100 terminal.
+- `c`: Boot a SVGAII/VGA graphical terminal (default in VBE builds)
 
 ![BoringOS running in serial mode](https://github.com/jvyden/BoringOS/assets/40577357/ea243350-6a04-45be-b173-c46c2d84cdec)
