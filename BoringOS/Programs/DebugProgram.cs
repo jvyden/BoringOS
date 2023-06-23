@@ -36,6 +36,10 @@ public class DebugProgram : Program
 
     public override byte Invoke(string[] args, BoringSession session)
     {
+        #if RELEASE
+        return 1;
+        #endif
+        
         if (args.Length == 0) return ShowHelp(session.Terminal);
 
         switch (args[0])

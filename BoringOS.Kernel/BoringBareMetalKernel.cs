@@ -62,6 +62,21 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         Console.WriteLine(message);
     }
 
+    protected override void PrintException(Exception e)
+    {
+        while (true)
+        {
+            Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+            if (e.InnerException != null)
+            {
+                e = e.InnerException;
+                continue;
+            }
+
+            break;
+        }
+    }
+
     protected override ITerminal InstantiateTerminal() => TerminalType switch
     {
         TerminalType.Console => new ConsoleTerminal(),

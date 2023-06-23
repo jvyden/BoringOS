@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using BoringOS.Kernel.Terminal;
+using Cosmos.Debug.Kernel;
 using Cosmos.System;
 using JetBrains.Annotations;
 using Console = System.Console;
@@ -14,6 +15,7 @@ public class CosmosKernel : Cosmos.System.Kernel
 
     protected override void OnBoot()
     {
+        DebuggerFactory.WriteToConsole = true;
         Global.Init(this.GetTextScreen(), false, true, false, false);
 
         _kernel = new BoringBareMetalKernel();
