@@ -33,5 +33,4 @@ fi
 qemu-system-x86_64 -boot d -cdrom "$ISO" -m "$MEMORY_SIZE" \
   -enable-kvm -cpu host \
   -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device rtl8139,netdev=net0 \
-  -vga qxl \
-  -S -s
+  -vga qxl

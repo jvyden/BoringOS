@@ -1,8 +1,11 @@
 ﻿using System;
 using BoringOS.Kernel.Terminal;
+using Cosmos.Core;
 using Cosmos.Debug.Kernel;
+using Cosmos.HAL;
 using Cosmos.System;
 using JetBrains.Annotations;
+using Zarlo.Cosmos.Threading.Core.Processing;
 using Console = System.Console;
 using Global = Cosmos.System.Global;
 
