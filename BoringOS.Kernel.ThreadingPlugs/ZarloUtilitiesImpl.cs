@@ -27,7 +27,10 @@ public class ZarloUtilitiesCallSwitchTask : AssemblerMethod
             typeof(ProcessorScheduler),
             nameof(ProcessorScheduler.SwitchTask)
         );
+        
         string? switchTask = LabelName.Get(switchTaskMethod);
+        
+        // Backup registers onto stack
         _ = new LiteralAssemblerCode("pushad");
         _ = new LiteralAssemblerCode("mov eax, ds");
         _ = new LiteralAssemblerCode("push eax");
@@ -37,15 +40,22 @@ public class ZarloUtilitiesCallSwitchTask : AssemblerMethod
         _ = new LiteralAssemblerCode("push eax");
         _ = new LiteralAssemblerCode("mov eax, gs");
         _ = new LiteralAssemblerCode("push eax");
+        
+        // Set all registers to 0x10 (?)
         _ = new LiteralAssemblerCode("mov ax, 0x10");
+        
         _ = new LiteralAssemblerCode("mov ds, ax");
         _ = new LiteralAssemblerCode("mov es, ax");
         _ = new LiteralAssemblerCode("mov fs, ax");
         _ = new LiteralAssemblerCode("mov gs, ax");
-        _ = new LiteralAssemblerCode("mov eax, esp");
+
+        _ = new LiteralAssemblerCode("mov eax, esp"); // Move esp (stack pointer) to eax
+        
         XS.Set(stackContext, EAX, destinationIsIndirect: true);
         XS.Call(switchTask);
         XS.Set(EAX, stackContext, sourceIsIndirect: true);
+        
+        // Restore registers from stack
         _ = new LiteralAssemblerCode("mov esp, eax");
         _ = new LiteralAssemblerCode("pop eax");
         _ = new LiteralAssemblerCode("mov gs, eax");
