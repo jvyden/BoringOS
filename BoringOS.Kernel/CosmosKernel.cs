@@ -25,10 +25,6 @@ public class CosmosKernel : Cosmos.System.Kernel
     {
         switch (c)
         {
-            case 's':
-                Console.WriteLine("!! Will boot into serial terminal !!");
-                this._kernel.TerminalType = TerminalType.Serial;
-                break;
             case 'c':
 #if VBE
                 Console.WriteLine("!! Will boot into console terminal !!");

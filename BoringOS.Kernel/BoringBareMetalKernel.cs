@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using BoringOS.Kernel.Network;
 using BoringOS.Kernel.Terminal;
 using BoringOS.Kernel.Threading;
 using BoringOS.Network;
+using BoringOS.Programs;
 using BoringOS.Terminal;
 using BoringOS.Threading;
 using BoringOS.Time;
@@ -78,10 +80,25 @@ public class BoringBareMetalKernel : AbstractBoringKernel
         }
     }
 
-    protected override ITerminal InstantiateTerminal() => TerminalType switch
+    protected override void StartUserspace(List<Program> programs)
+    {
+        List<ITerminal> terminals = new()
+        {
+            this.InstantiatePrimaryTerminal(),
+            new SerialTerminal()
+        };
+
+        foreach (ITerminal terminal in terminals)
+        {
+            StartSession(terminal, programs);
+        }
+        
+        while(this.KernelIsRunning) {}
+    }
+
+    private ITerminal InstantiatePrimaryTerminal() => TerminalType switch
     {
         TerminalType.Console => new ConsoleTerminal(),
-        TerminalType.Serial => new SerialTerminal(),
         TerminalType.Canvas => new CanvasTerminal(),
         _ => throw new ArgumentOutOfRangeException()
     };

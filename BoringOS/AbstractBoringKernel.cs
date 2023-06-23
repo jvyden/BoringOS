@@ -8,9 +8,7 @@ namespace BoringOS;
 
 public abstract partial class AbstractBoringKernel
 {
-    private ITerminal _terminal = null!;
-    private BoringShell _shell = null!;
-    private BoringSession _session = null!;
+    protected ITerminal KernelTerminal = null!;
 
     private KernelTimer _sysTimer = null!;
 
@@ -21,12 +19,38 @@ public abstract partial class AbstractBoringKernel
     protected abstract void WriteAll(string message);
     protected abstract SystemInformation CollectSystemInfo();
 
-    protected virtual ITerminal InstantiateTerminal() => new ConsoleTerminal();
+    protected virtual ITerminal InstantiateKernelTerminal() => new ConsoleTerminal();
     public virtual KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
     protected abstract NetworkManager InstantiateNetworkManager();
     protected abstract AbstractProcessManager InstantiateProcessManager();
-    
+
     private partial List<Program> InstantiatePrograms();
+
+    protected virtual void StartUserspace(List<Program> programs)
+    {
+        ConsoleTerminal terminal = new ConsoleTerminal();
+        StartSession(terminal, programs);
+
+        while (this.KernelIsRunning)
+        {}
+    }
+
+    protected void StartSession(ITerminal terminal, List<Program> programs)
+    {
+        this.ProcessManager.StartProcess(() =>
+        {
+            this.KernelTerminal.WriteChar('\n');
+            this.KernelTerminal.WriteString($"Welcome to {BoringVersionInformation.FullVersion}\n");
+            this.KernelTerminal.WriteString($"  Boot took {this._sysTimer.ElapsedMilliseconds}ms\n");
+            
+            BoringSession session = new BoringSession(terminal, programs, this);
+            BoringShell shell = new BoringShell(session);
+            while (this.KernelIsRunning)
+            {
+                shell.InputCycle();
+            }
+        });
+    }
 
     public long ElapsedMilliseconds => this._sysTimer.ElapsedMilliseconds;
     public SystemInformation SystemInformation { get; private set; }
@@ -41,59 +65,51 @@ public abstract partial class AbstractBoringKernel
 
     public void BeforeRun()
     {
-        Console.WriteLine("  Gathering SystemInformation");
+        // Set up terminal
+        Console.WriteLine("  Initializing terminal");
+        this.KernelTerminal = this.InstantiateKernelTerminal();
+        
+        this.KernelTerminal.WriteString("  Gathering SystemInformation\n");
         this.SystemInformation = this.CollectSystemInfo();
 
-        Console.Write($"    CPU: {this.SystemInformation.CPUVendor} {this.SystemInformation.CPUBrand}, ");
-        Console.WriteLine($"{this.SystemInformation.MemoryCountKilobytes / 1024}MB of memory");
+        this.KernelTerminal.WriteString($"    CPU: {this.SystemInformation.CPUVendor} {this.SystemInformation.CPUBrand}, ");
+        this.KernelTerminal.WriteString($"{this.SystemInformation.MemoryCountKilobytes / 1024}MB of memory\n");
 
-        Console.WriteLine("  Initializing network");
+        this.KernelTerminal.WriteString("  Initializing network\n");
         this.Network = this.InstantiateNetworkManager();
         this.Network.Initialize();
         
-        Console.WriteLine("  Initializing threading");
+        this.KernelTerminal.WriteString("  Initializing threading\n");
         this.ProcessManager = this.InstantiateProcessManager();
         this.ProcessManager.Initialize();
 
-        // Set up terminal
-        Console.WriteLine("  Initializing terminal");
-        this._terminal = this.InstantiateTerminal();
-        
         if (this.NeedsManualGarbageCollection)
         {
             long freed = this.CollectGarbage();
-            Console.WriteLine($"  Freed {freed / 1024}KB of memory");
+            this.KernelTerminal.WriteString($"  Freed {freed / 1024}KB of memory\n");
         }
-        
-        this._terminal.WriteChar('\n');
-        this._terminal.WriteString($"Welcome to {BoringVersionInformation.FullVersion}\n");
-        this._terminal.WriteString($"  Boot took {this._sysTimer.ElapsedMilliseconds}ms\n");
-
-        List<Program> programs = this.InstantiatePrograms();
-
-        this._session = new BoringSession(this._terminal, programs, this);
-        this._shell = new BoringShell(this._session);
     }
 
     public void Run()
     {
         try
         {
-            this._shell.InputCycle();
+            List<Program> programs = this.InstantiatePrograms();
+            this.StartUserspace(programs);
         }
         catch(Exception e)
         {
-            // try
-            // {
+            try
+            {
                 this.HandleCrash(e);
-            // }
-            // catch(Exception ee)
-            // {
-            //     this.WriteAll("Could not properly handle crash. Halt.");
-            //     this.WriteAll(ee.ToString());
-            //     this.HaltKernel();
-            //     return;
-            // }
+            }
+            catch(Exception ee)
+            {
+                this.WriteAll("Could not properly handle crash. Halt.");
+                this.WriteAll(ee.ToString());
+                this.HaltKernel();
+                return;
+            }
         }
 
         if(this.NeedsManualGarbageCollection) 
@@ -118,7 +134,8 @@ public abstract partial class AbstractBoringKernel
     {
         while (true)
         {
-            Console.WriteLine(e);
+            this.KernelTerminal.WriteString(e.ToString());
+            this.KernelTerminal.WriteChar('\n');
             if (e.InnerException != null)
             {
                 e = e.InnerException;
@@ -132,40 +149,40 @@ public abstract partial class AbstractBoringKernel
     private void HandleCrash(Exception e)
     {
         // TODO: use terminal if possible
-        this.WriteAll("Unhandled exception: " + e);
-        this.WriteAll("Crash occurred - please see console for instructions\n");
-        Console.BackgroundColor = ConsoleColor.DarkRed;
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.Clear();
-        Console.SetCursorPosition(0, 0);
+        this.WriteAll("Unhandled exception: " + e + '\n');
+        this.WriteAll("Crash occurred - please see kernel terminal for instructions\n");
+        // this.KernelTerminal.BackgroundColor = ConsoleColor.DarkRed;
+        // this.KernelTerminal.ForegroundColor = ConsoleColor.White;
+        this.KernelTerminal.ClearScreen();
+        this.KernelTerminal.SetCursorPosition(0, 0);
         
-        Console.WriteLine(BoringVersionInformation.FullVersion);
+        this.KernelTerminal.WriteString(BoringVersionInformation.FullVersion);
         
-        Console.WriteLine();
+        this.KernelTerminal.WriteChar('\n');
         PrintException(e);
-        Console.WriteLine();
+        this.KernelTerminal.WriteChar('\n');
         
-        Console.WriteLine("The above exception went entirely unhandled - the kernel had to step in.");
-        Console.Write("This is a particularly bad crash, as it should have been handled appropriately\nby the session.");
-        Console.Write(" Alas, it was not and you have now been brought here.\n");
+        this.KernelTerminal.WriteString("The above exception went entirely unhandled - the kernel had to step in.\n");
+        this.KernelTerminal.WriteString("This is a particularly bad crash, as it should have been handled appropriately\nby the session.");
+        this.KernelTerminal.WriteString(" Alas, it was not and you have now been brought here.\n");
         
-        Console.WriteLine();
-        Console.WriteLine("If you do not know what you are doing, press 'H' to halt the system now.");
-        Console.WriteLine();
+        this.KernelTerminal.WriteChar('\n');
+        this.KernelTerminal.WriteString("If you do not know what you are doing, press 'H' to halt the system now.");
+        this.KernelTerminal.WriteChar('\n');
         
         while (true)
         {
-            Console.Write("Press H to halt, D to take a memory dump, or C to continue: ");
-            char c = Console.ReadKey(true).KeyChar;
+            this.KernelTerminal.WriteString("Press H to halt, D to take a memory dump, or C to continue: ");
+            char c = this.KernelTerminal.ReadKey().KeyChar;
 
             if (c == 'c')
             {
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Clear();
-                Console.WriteLine("You have been dumped back to wherever you were.");
-                Console.WriteLine("If any problems persist, please halt and reboot the computer.");
-                Console.WriteLine();
+                // Console.BackgroundColor = ConsoleColor.Black;
+                // Console.ForegroundColor = ConsoleColor.Gray;
+                this.KernelTerminal.ClearScreen();
+                this.KernelTerminal.WriteString("You have been dumped back to wherever you were.\n");
+                this.KernelTerminal.WriteString("If any problems persist, please halt and reboot the computer.\n");
+                this.KernelTerminal.WriteChar('\n');
                 break;
             }
 
@@ -177,18 +194,18 @@ public abstract partial class AbstractBoringKernel
             
             if (c == 'd')
             {
-                Console.WriteLine("Unimplemented");
+                this.KernelTerminal.WriteString("Unimplemented\n");
             }
             
 #if DEBUG
             if (c == '0')
             {
-                Console.WriteLine("Crashing again on purpose");
+                this.KernelTerminal.WriteString("Crashing again on purpose\n");
                 throw e;
             }
 #endif
 
-            Console.WriteLine("Invalid key");
+            this.KernelTerminal.WriteString("Invalid key\n");
         }
     }
 }
