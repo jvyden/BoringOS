@@ -20,5 +20,6 @@ When BoringOS starts up, you can hold a key down to trigger different behaviours
 
 - `s`: Load a serial VT100 terminal.
 - `c`: Boot a SVGAII/VGA graphical terminal (default in VBE builds)
+- `t`: Force kernel to disable multithreading
 
 ![BoringOS running in serial mode](https://github.com/jvyden/BoringOS/assets/40577357/ea243350-6a04-45be-b173-c46c2d84cdec)
