@@ -42,6 +42,8 @@ public class DebugProgram : Program
             int i = 0;
             while (true)
             {
+                Console.BackgroundColor = ConsoleColor.Blue;
+                Console.Clear();
                 terminal.WriteString($"Thread tick {i++}\n");
                 processManager.Sleep(1000);
             }

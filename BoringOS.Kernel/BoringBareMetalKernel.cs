@@ -2,7 +2,6 @@ using System;
 using BoringOS.Kernel.Network;
 using BoringOS.Kernel.Terminal;
 using BoringOS.Kernel.Threading;
-using BoringOS.Kernel.Time;
 using BoringOS.Network;
 using BoringOS.Terminal;
 using BoringOS.Threading;
@@ -22,7 +21,6 @@ public class BoringBareMetalKernel : AbstractBoringKernel
 #else
     internal TerminalType TerminalType = TerminalType.Console;
 #endif
-    public bool ThreadingEnabled = true;
 
     protected override SystemInformation CollectSystemInfo()
     {
@@ -89,19 +87,9 @@ public class BoringBareMetalKernel : AbstractBoringKernel
     };
 
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
-    protected override AbstractProcessManager InstantiateProcessManager()
-    {
-        if (this.ThreadingEnabled)
-            return new ZarloProcessManager();
-        
-        return new FakeProcessManager();
-    }
-    
-    public override KernelTimer InstantiateTimer()
-    {
-        if (this.ThreadingEnabled) 
-            return new UtcNowKernelTimer(); // Use RTC to avoid usage of PIT
+    protected override AbstractProcessManager InstantiateProcessManager() => new ZarloProcessManager();
 
-        return new PITKernelTimer();
-    }
+    // Use UtcNowKernelTimer, uses RTC to avoid usage of PIT
+    // TODO: Make a thread-based timer
+    public override KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
 }

@@ -1,11 +1,8 @@
 ﻿using System;
 using BoringOS.Kernel.Terminal;
-using Cosmos.Core;
 using Cosmos.Debug.Kernel;
-using Cosmos.HAL;
 using Cosmos.System;
 using JetBrains.Annotations;
-using Zarlo.Cosmos.Threading.Core.Processing;
 using Console = System.Console;
 using Global = Cosmos.System.Global;
 
@@ -40,10 +37,6 @@ public class CosmosKernel : Cosmos.System.Kernel
                 Console.WriteLine("!! Will boot into canvas terminal !!");
                 this._kernel.TerminalType = TerminalType.Canvas;
 #endif
-                break;
-            case 't':
-                Console.WriteLine("!! Disabling threading !!");
-                this._kernel.ThreadingEnabled = false;
                 break;
             default:
                 Console.WriteLine($"!!! Unknown startup key {c} !!!");
