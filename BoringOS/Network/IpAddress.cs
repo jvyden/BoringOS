@@ -87,7 +87,12 @@ public readonly struct IpAddress
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(this._a, this._b, this._c, this._d);
+        int hash = 0;
+        hash |= (this._a & 0xFF) << 24;
+        hash |= (this._b & 0xFF) << 16;
+        hash |= (this._c & 0xFF) << 8;
+        hash |= (this._d & 0xFF);
+        return hash;
     }
 
     public bool Equals(IpAddress other) => this._a == other._a && this._b == other._b && this._c == other._c && this._d == other._d;

@@ -1,11 +1,10 @@
-﻿using JetBrains.Annotations;
-using Mosa.DeviceSystem;
+﻿using Mosa.DeviceSystem;
 using Mosa.Kernel.x86;
 using Mosa.Runtime.Plug;
 
 namespace BoringOS.MOSA;
 
-[UsedImplicitly]
+// [UsedImplicitly]
 public static class Boot
 {
     [Plug("Mosa.Runtime.StartUp::SetInitialMemory")]

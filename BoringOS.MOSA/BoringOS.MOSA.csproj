@@ -7,6 +7,8 @@
         <LangVersion>11.0</LangVersion>
         <OutputPath>bin</OutputPath>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Configurations>Debug;Release;DebugMosa</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -17,12 +19,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Mosa.Korlib" Version="*" />
-        <PackageReference Include="Mosa.DeviceSystem" Version="*" />
-        <PackageReference Include="Mosa.Kernel.x86" Version="*" />
-        <PackageReference Include="Mosa.Platform.x86" Version="*" />
-        <PackageReference Include="Mosa.Runtime" Version="*" />
-        <PackageReference Include="Mosa.Tools.Package" Version="*" />
+        <PackageReference Include="Mosa.Korlib" Version="2.4.0.893" />
+        <PackageReference Include="Mosa.DeviceSystem" Version="2.4.0.893" />
+        <PackageReference Include="Mosa.Kernel.x86" Version="2.4.0.893" />
+        <PackageReference Include="Mosa.Platform.x86" Version="2.4.0.893" />
+        <PackageReference Include="Mosa.Runtime" Version="2.4.0.893" />
+        <PackageReference Include="Mosa.Tools.Package" Version="2.4.0.893" />
     </ItemGroup>
 
     <ItemGroup>

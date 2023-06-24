@@ -1,11 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
+    <PropertyGroup Condition="$(Configuration) != 'DebugMosa'">
         <TargetFramework>netstandard2.1</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration) == 'DebugMosa'">
+        <TargetFramework>net7.0</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <DisableStandardFrameworkResolution>true</DisableStandardFrameworkResolution>
+        <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    </PropertyGroup>
+    
+    <ItemGroup Condition="$(Configuration) == 'DebugMosa'">
+        <PackageReference Include="Mosa.Korlib" Version="2.4.0.893" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <ImplicitUsings>false</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TargetsForTfmSpecificContentInPackage>true</TargetsForTfmSpecificContentInPackage>
         <LangVersion>11</LangVersion>
+        <Configurations>Debug;Release;DebugMosa</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
     
     <ItemGroup>

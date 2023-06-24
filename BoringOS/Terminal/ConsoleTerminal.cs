@@ -1,5 +1,7 @@
 namespace BoringOS.Terminal;
 
+#if !DEBUGMOSA
+
 public class ConsoleTerminal : ITerminal
 {
     public ConsoleKeyInfo ReadKey() => Console.ReadKey(true);
@@ -44,3 +46,5 @@ public class ConsoleTerminal : ITerminal
         Console.Clear();
     }
 }
+
+#endif

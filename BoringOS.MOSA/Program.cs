@@ -1,9 +1,8 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace BoringOS.MOSA;
 
-[UsedImplicitly]
+// [UsedImplicitly]
 public static class Program
 {
     private static BoringMosaKernel _kernel = null!;
