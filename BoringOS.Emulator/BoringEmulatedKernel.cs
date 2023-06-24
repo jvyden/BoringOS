@@ -5,7 +5,7 @@ using BoringOS.Threading;
 
 namespace BoringOS.Emulator;
 
-public class BoringEmulatedKernel : AbstractBoringKernel
+public class BoringEmulatedKernel : BoringKernel
 {
     protected override bool NeedsManualGarbageCollection => false;
 
@@ -39,5 +39,5 @@ public class BoringEmulatedKernel : AbstractBoringKernel
     }
 
     protected override NetworkManager InstantiateNetworkManager() => new EmulatedNetworkManager();
-    protected override AbstractProcessManager InstantiateProcessManager() => new TaskProcessManager();
+    protected override ProcessManager InstantiateProcessManager() => new TaskProcessManager();
 }

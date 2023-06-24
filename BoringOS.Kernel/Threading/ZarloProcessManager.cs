@@ -7,7 +7,7 @@ using Zarlo.Cosmos.Threading.Core.Processing;
 
 namespace BoringOS.Kernel.Threading;
 
-public class ZarloProcessManager : AbstractProcessManager
+public class ZarloProcessManager : ProcessManager
 {
     [SuppressMessage("ReSharper", "ConditionalAccessQualifierIsNonNullableAccordingToAPIContract")]
     public override void Initialize()

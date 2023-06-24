@@ -35,7 +35,7 @@ public class DebugProgram : Program
         }
     }
 
-    private static void SpawnThread(ITerminal terminal, AbstractProcessManager processManager)
+    private static void SpawnThread(ITerminal terminal, ProcessManager processManager)
     {
         processManager.StartProcess(() =>
         {

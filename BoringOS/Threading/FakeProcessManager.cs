@@ -4,7 +4,7 @@ namespace BoringOS.Threading;
 /// A process manager that invokes tasks directly instead of using multitasking.
 /// Basically, a single-threaded mode for the kernel.
 /// </summary>
-public class FakeProcessManager : AbstractProcessManager
+public class FakeProcessManager : ProcessManager
 {
     public override void Initialize()
     {

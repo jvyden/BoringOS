@@ -48,7 +48,7 @@ public class ProgramGenerator : ISourceGenerator
 
             namespace BoringOS;
 
-            public abstract partial class AbstractBoringKernel
+            public abstract partial class BoringKernel
             {
                 private partial List<Program> InstantiatePrograms()
                 {

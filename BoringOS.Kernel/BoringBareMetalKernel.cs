@@ -15,7 +15,7 @@ using Cosmos.HAL;
 
 namespace BoringOS.Kernel;
 
-public class BoringBareMetalKernel : AbstractBoringKernel
+public class BoringBareMetalKernel : BoringKernel
 {
     protected override bool NeedsManualGarbageCollection => true;
 #if VBE
@@ -104,7 +104,7 @@ public class BoringBareMetalKernel : AbstractBoringKernel
     };
 
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
-    protected override AbstractProcessManager InstantiateProcessManager() => new ZarloProcessManager();
+    protected override ProcessManager InstantiateProcessManager() => new ZarloProcessManager();
 
     // Use UtcNowKernelTimer, uses RTC to avoid usage of PIT
     // TODO: Make a thread-based timer

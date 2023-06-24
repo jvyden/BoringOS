@@ -6,7 +6,7 @@ using BoringOS.Time;
 
 namespace BoringOS;
 
-public abstract partial class AbstractBoringKernel
+public abstract partial class BoringKernel
 {
     protected ITerminal KernelTerminal = null!;
 
@@ -22,7 +22,7 @@ public abstract partial class AbstractBoringKernel
     protected virtual ITerminal InstantiateKernelTerminal() => new ConsoleTerminal();
     public virtual KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
     protected abstract NetworkManager InstantiateNetworkManager();
-    protected abstract AbstractProcessManager InstantiateProcessManager();
+    protected abstract ProcessManager InstantiateProcessManager();
 
     private partial List<Program> InstantiatePrograms();
 
@@ -55,7 +55,7 @@ public abstract partial class AbstractBoringKernel
     public long ElapsedMilliseconds => this._sysTimer.ElapsedMilliseconds;
     public SystemInformation SystemInformation { get; private set; }
     public NetworkManager Network { get; private set; } = null!;
-    public AbstractProcessManager ProcessManager { get; private set; } = null!;
+    public ProcessManager ProcessManager { get; private set; } = null!;
 
     public void OnBoot()
     {

@@ -6,7 +6,7 @@ namespace BoringOS;
 
 public class BoringSession
 {
-    public BoringSession(ITerminal terminal, List<Program> programs, AbstractBoringKernel kernel)
+    public BoringSession(ITerminal terminal, List<Program> programs, BoringKernel kernel)
     {
         this.Terminal = terminal;
         this.Programs = programs;
@@ -23,7 +23,7 @@ public class BoringSession
     public uint SessionId { get; private init; }
 
     public readonly ITerminal Terminal;
-    public readonly AbstractBoringKernel Kernel;
+    public readonly BoringKernel Kernel;
     public readonly List<Program> Programs;
     
 

@@ -2,7 +2,7 @@ using BoringOS.Threading;
 
 namespace BoringOS.Emulator.Threading;
 
-public class TaskProcessManager : AbstractProcessManager
+public class TaskProcessManager : ProcessManager
 {
     public override void Initialize()
     {
