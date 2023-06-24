@@ -1,20 +1,23 @@
-﻿// Copyright (c) MOSA Project. Licensed under the New BSD License.
+﻿using System;
+using JetBrains.Annotations;
 
-using System;
+namespace BoringOS.MOSA;
 
-namespace BoringOS.MOSA
+[UsedImplicitly]
+public static class Program
 {
-    public static class Program
+    private static BoringMosaKernel _kernel = null!;
+    
+    public static void Setup()
     {
-        public static void Setup()
-        {
-            Console.ResetColor();
-            Console.Clear();
-            Console.WriteLine("Hello World!");
-        }
+        Console.WriteLine("Setup complete, jumping to BoringMosaKernel");
+        _kernel = new BoringMosaKernel();
+        _kernel.OnBoot();
+        _kernel.BeforeRun();
+    }
 
-        public static void Loop()
-        {
-        }
+    public static void Loop()
+    {
+        _kernel.Run();
     }
 }

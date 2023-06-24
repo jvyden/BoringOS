@@ -1,38 +1,37 @@
-﻿// Copyright (c) MOSA Project. Licensed under the New BSD License.
-
+﻿using JetBrains.Annotations;
 using Mosa.DeviceSystem;
 using Mosa.Kernel.x86;
 using Mosa.Runtime.Plug;
 
-namespace BoringOS.MOSA
+namespace BoringOS.MOSA;
+
+[UsedImplicitly]
+public static class Boot
 {
-    public static class Boot
+    [Plug("Mosa.Runtime.StartUp::SetInitialMemory")]
+    public static void SetInitialMemory()
     {
-        [Plug("Mosa.Runtime.StartUp::SetInitialMemory")]
-        public static void SetInitialMemory()
-        {
-            KernelMemory.SetInitialMemory(Address.GCInitialMemory, 0x01000000);
-        }
+        KernelMemory.SetInitialMemory(Address.GCInitialMemory, 0x01000000);
+    }
 
-        public static void Main()
-        {
-            #region Initialization
+    public static void Main()
+    {
+        #region Initialization
 
-            Kernel.Setup();
-            IDT.SetInterruptHandler(ProcessInterrupt);
+        Kernel.Setup();
+        IDT.SetInterruptHandler(ProcessInterrupt);
 
-            #endregion
+        #endregion
 
-            Program.Setup();
+        Program.Setup();
 
-            for (;;)
-                Program.Loop();
-        }
+        for (;;)
+            Program.Loop();
+    }
 
-        public static void ProcessInterrupt(uint interrupt, uint errorCode)
-        {
-            if (interrupt >= 0x20 && interrupt < 0x30)
-                HAL.ProcessInterrupt((byte)(interrupt - 0x20));
-        }
+    public static void ProcessInterrupt(uint interrupt, uint errorCode)
+    {
+        if (interrupt >= 0x20 && interrupt < 0x30)
+            HAL.ProcessInterrupt((byte)(interrupt - 0x20));
     }
 }

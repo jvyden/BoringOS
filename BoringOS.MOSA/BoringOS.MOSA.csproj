@@ -17,12 +17,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Mosa.Korlib" Version="*"/>
-        <PackageReference Include="Mosa.DeviceSystem" Version="*"/>
-        <PackageReference Include="Mosa.Kernel.x86" Version="*"/>
-        <PackageReference Include="Mosa.Platform.x86" Version="*"/>
-        <PackageReference Include="Mosa.Runtime" Version="*"/>
-        <PackageReference Include="Mosa.Tools.Package" Version="*"/>
+        <PackageReference Include="Mosa.Korlib" Version="*" />
+        <PackageReference Include="Mosa.DeviceSystem" Version="*" />
+        <PackageReference Include="Mosa.Kernel.x86" Version="*" />
+        <PackageReference Include="Mosa.Platform.x86" Version="*" />
+        <PackageReference Include="Mosa.Runtime" Version="*" />
+        <PackageReference Include="Mosa.Tools.Package" Version="*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BoringOS\BoringOS.csproj" />
     </ItemGroup>
 
 </Project>

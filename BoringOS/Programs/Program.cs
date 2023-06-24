@@ -11,8 +11,8 @@ public abstract class Program
         this.Description = description ?? "No description available.";
     }
 
-    public string Name { get; private init; }
-    public string Description { get; private init; }
+    public string Name { get; private set; }
+    public string Description { get; private set; }
 
     public abstract byte Invoke(string[] args, BoringSession session);
 }
