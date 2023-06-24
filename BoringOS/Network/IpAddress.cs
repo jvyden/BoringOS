@@ -63,6 +63,8 @@ public readonly struct IpAddress
 
     public override string ToString()
     {
+        // TODO: Implement MOSA
+#if !DEBUGMOSA
         const char separator = '.';
         const int maxLength = 15; // "255.255.255.255".Length
         Span<char> address = stackalloc char[maxLength];
@@ -83,6 +85,9 @@ public readonly struct IpAddress
         this._d.TryFormat(address[offset..], out _);
         
         return address.ToString();
+#else
+        return this._a + '.' + this._b + '.' + this._c + '.' + this._d.ToString();
+#endif
     }
 
     public override int GetHashCode()

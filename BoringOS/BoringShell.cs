@@ -115,13 +115,27 @@ public class BoringShell
         if (args.Count == 0) return;
         string programName = args[0];
 
-        Program? program = this._session.Programs.FirstOrDefault(p => p.Name == programName);
+        Program? program = null;
+        foreach (Program? p in this._session.Programs)
+        {
+            if (p.Name != programName) continue;
+            
+            program = p;
+            break;
+        }
+
         if (program == null)
         {
             this._session.Terminal.WriteString($"{programName}: Program not found\n");
             return;
         }
 
-        program.Invoke(args.Skip(1).ToArray(), this._session);
+        string[] argsNoBase = new string [args.Count - 1];
+        for (int i = 1; i < args.Count; i++)
+        {
+            argsNoBase[i - 1] = args[i];
+        }
+
+        program.Invoke(argsNoBase, this._session);
     }
 }

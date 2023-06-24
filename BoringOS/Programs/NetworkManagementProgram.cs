@@ -1,4 +1,3 @@
-using System.Threading;
 using BoringOS.Network;
 using BoringOS.Terminal;
 
@@ -34,7 +33,6 @@ public class NetworkManagementProgram : Program
     private static void DebugIp(ITerminal terminal, string ip)
     {
         IpAddress address = new IpAddress(ip);
-        Thread.Sleep(1000);
         terminal.WriteString(address.ToString());
         terminal.WriteChar('\n');
     }

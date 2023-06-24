@@ -1,5 +1,6 @@
 using BoringOS.MOSA.Network;
 using BoringOS.Network;
+using BoringOS.Terminal;
 using BoringOS.Threading;
 using Mosa.Kernel.x86;
 
@@ -31,6 +32,12 @@ public class BoringMosaKernel : BoringKernel
             CPUBrand = "Bogus Data",
             MemoryCountKilobytes = 0,
         };
+    }
+
+    protected override ITerminal InstantiateKernelTerminal()
+    {
+        // throw new Exception();
+        return null;
     }
 
     protected override NetworkManager InstantiateNetworkManager()

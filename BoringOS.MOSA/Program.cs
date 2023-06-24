@@ -1,4 +1,5 @@
 ﻿using System;
+using Mosa.Kernel.x86;
 
 namespace BoringOS.MOSA;
 
@@ -9,7 +10,7 @@ public static class Program
     
     public static void Setup()
     {
-        Console.WriteLine("Setup complete, jumping to BoringMosaKernel");
+        Screen.WriteLine("Setup complete, jumping to BoringMosaKernel");
         _kernel = new BoringMosaKernel();
         _kernel.OnBoot();
         _kernel.BeforeRun();
