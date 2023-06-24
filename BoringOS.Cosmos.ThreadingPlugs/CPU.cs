@@ -2,7 +2,7 @@ using Cosmos.Core;
 using IL2CPU.API.Attribs;
 using Zarlo.XSharp;
 
-namespace BoringOS.Kernel.ThreadingPlugs;
+namespace BoringOS.Cosmos.ThreadingPlugs;
 
 // ReSharper disable all
 

@@ -2,7 +2,7 @@ using System;
 using BoringOS.Terminal;
 using Cosmos.HAL;
 
-namespace BoringOS.Kernel.Terminal;
+namespace BoringOS.Cosmos.Terminal;
 
 public class SerialTerminal : ITerminal
 {
@@ -11,13 +11,13 @@ public class SerialTerminal : ITerminal
         char c = (char)SerialPort.Receive();
         if (c == (char)0x1b) return this.HandleVt100Code();
 
-        return FromChar(c);
+        return this.FromChar(c);
     }
 
     private ConsoleKeyInfo HandleVt100Code()
     {
         char c = (char)SerialPort.Receive();
-        if (c != '[') return FromChar(c);
+        if (c != '[') return this.FromChar(c);
 
         ConsoleKey keyCode = SerialPort.Receive() switch
         {
@@ -28,7 +28,7 @@ public class SerialTerminal : ITerminal
             _ => ConsoleKey.NoName,
         };
         
-        return FromKey(keyCode);
+        return this.FromKey(keyCode);
     }
 
     private ConsoleKeyInfo FromChar(char c)

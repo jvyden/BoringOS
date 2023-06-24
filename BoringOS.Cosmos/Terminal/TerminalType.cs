@@ -1,4 +1,4 @@
-namespace BoringOS.Kernel.Terminal;
+namespace BoringOS.Cosmos.Terminal;
 
 public enum TerminalType
 {

@@ -5,7 +5,7 @@ using Zarlo.Cosmos.Threading.Core.Context;
 using Zarlo.Cosmos.Threading.Core.Processing;
 using ThreadState = Zarlo.Cosmos.Threading.Core.Context.ThreadState;
 
-namespace BoringOS.Kernel.ThreadingPlugs;
+namespace BoringOS.Cosmos.ThreadingPlugs;
 
 public static class BoringProcessScheduler
 {

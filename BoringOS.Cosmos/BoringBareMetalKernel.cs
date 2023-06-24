@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using BoringOS.Kernel.Network;
-using BoringOS.Kernel.Terminal;
-using BoringOS.Kernel.Threading;
+using BoringOS.Cosmos.Network;
+using BoringOS.Cosmos.Terminal;
+using BoringOS.Cosmos.Threading;
 using BoringOS.Network;
 using BoringOS.Programs;
 using BoringOS.Terminal;
@@ -13,7 +13,7 @@ using Cosmos.Core.Memory;
 using Cosmos.Core.Multiboot;
 using Cosmos.HAL;
 
-namespace BoringOS.Kernel;
+namespace BoringOS.Cosmos;
 
 public class BoringBareMetalKernel : BoringKernel
 {
@@ -90,13 +90,13 @@ public class BoringBareMetalKernel : BoringKernel
 
         foreach (ITerminal terminal in terminals)
         {
-            StartSession(terminal, programs);
+            this.StartSession(terminal, programs);
         }
         
         while(this.KernelIsRunning) {}
     }
 
-    private ITerminal InstantiatePrimaryTerminal() => TerminalType switch
+    private ITerminal InstantiatePrimaryTerminal() => this.TerminalType switch
     {
         TerminalType.Console => new ConsoleTerminal(),
         TerminalType.Canvas => new CanvasTerminal(),

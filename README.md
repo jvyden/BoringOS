@@ -10,7 +10,7 @@ A boring abstracted kernel for use with COSMOS and the .NET runtime.
 
 A version of the kernel in the .NET runtime, intended for quick, iterative development/debugging of applications.
 
-## BoringOS.Kernel
+## BoringOS.Cosmos
 
 An actual implementation of the kernel on bare metal. Run with `run.sh` on UNIX or through the COSMOS Visual Studio extension.
 

@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using BoringOS.Kernel.ThreadingPlugs;
+using BoringOS.Cosmos.ThreadingPlugs;
 using BoringOS.Threading;
 using Zarlo.Cosmos.Threading;
 using Zarlo.Cosmos.Threading.Core.Processing;
 
-namespace BoringOS.Kernel.Threading;
+namespace BoringOS.Cosmos.Threading;
 
 public class ZarloProcessManager : ProcessManager
 {

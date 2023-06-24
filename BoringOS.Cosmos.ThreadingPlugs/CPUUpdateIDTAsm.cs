@@ -8,7 +8,7 @@ using XSharp.Assembler.x86;
 using static XSharp.XSRegisters;
 
 
-namespace BoringOS.Kernel.ThreadingPlugs;
+namespace BoringOS.Cosmos.ThreadingPlugs;
 
 // Resharper disable all
 

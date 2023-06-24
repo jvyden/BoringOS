@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Kernel", "BoringOS.Kernel\BoringOS.Kernel.csproj", "{1DA0D8C8-B819-4151-8CFD-2534B51F4D4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Cosmos", "BoringOS.Cosmos\BoringOS.Cosmos.csproj", "{1DA0D8C8-B819-4151-8CFD-2534B51F4D4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Analyzers", "BoringOS.Analyzers\BoringOS.Analyzers.csproj", "{CE4F25B9-E23B-4AEC-9937-ADDEB7ACDE1B}"
 EndProject
@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS", "BoringOS\Boring
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Emulator", "BoringOS.Emulator\BoringOS.Emulator.csproj", "{C0D509BC-49C9-45B6-AFC7-B9633308C099}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Kernel.ThreadingPlugs", "BoringOS.Kernel.ThreadingPlugs\BoringOS.Kernel.ThreadingPlugs.csproj", "{D7D89A6B-DB03-40E2-B561-38CE6C5C0F9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringOS.Cosmos.ThreadingPlugs", "BoringOS.Cosmos.ThreadingPlugs\BoringOS.Cosmos.ThreadingPlugs.csproj", "{D7D89A6B-DB03-40E2-B561-38CE6C5C0F9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

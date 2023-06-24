@@ -11,6 +11,8 @@
         <Configurations>Debug;Release;DebugVBE</Configurations>
         <Platforms>AnyCPU</Platforms>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AssemblyName>BoringOS.Cosmos</AssemblyName>
+        <RootNamespace>BoringOS.Cosmos</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -33,11 +35,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BoringOS.Kernel.ThreadingPlugs\BoringOS.Kernel.ThreadingPlugs.csproj" />
+      <ProjectReference Include="..\BoringOS.Cosmos.ThreadingPlugs\BoringOS.Cosmos.ThreadingPlugs.csproj" />
       <ProjectReference Include="..\BoringOS\BoringOS.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-        <PlugsReference Include="$(MSBuildThisFileDirectory)../BoringOS.Kernel.ThreadingPlugs/bin/Debug/$(TargetFramework)/BoringOS.Kernel.ThreadingPlugs.dll" />
+        <PlugsReference Include="$(MSBuildThisFileDirectory)../BoringOS.Cosmos.ThreadingPlugs/bin/Debug/$(TargetFramework)/BoringOS.Cosmos.ThreadingPlugs.dll" />
     </ItemGroup>
 </Project>

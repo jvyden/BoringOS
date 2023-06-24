@@ -7,7 +7,7 @@ using Zarlo.Cosmos.Threading.Core.Processing;
 
 // ReSharper disable all
 
-namespace BoringOS.Kernel.ThreadingPlugs;
+namespace BoringOS.Cosmos.ThreadingPlugs;
 
 [Plug(Target = typeof(ObjUtilities))]
 public static unsafe class ObjUtilitiesImpl

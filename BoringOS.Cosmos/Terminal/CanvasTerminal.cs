@@ -1,14 +1,12 @@
 using System;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using BoringOS.Terminal;
 using Cosmos.Core.Multiboot;
 using Cosmos.System;
 using Cosmos.System.Graphics;
-using Cosmos.System.Graphics.Fonts;
 using Console = System.Console;
 
-namespace BoringOS.Kernel.Terminal;
+namespace BoringOS.Cosmos.Terminal;
 
 public class CanvasTerminal : ITerminal
 {
@@ -94,7 +92,7 @@ public class CanvasTerminal : ITerminal
         if(display) this._canvas.Display();
     }
 
-    public void WriteChar(char c) => WriteChar(c, true);
+    public void WriteChar(char c) => this.WriteChar(c, true);
     
     public void WriteString(string str)
     {

@@ -5,6 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AssemblyName>BoringOS.Cosmos.ThreadingPlugs</AssemblyName>
+        <RootNamespace>BoringOS.Cosmos.ThreadingPlugs</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

@@ -3,7 +3,7 @@ using BoringOS.Time;
 using Cosmos.HAL;
 using Global = Cosmos.HAL.Global;
 
-namespace BoringOS.Kernel.Time;
+namespace BoringOS.Cosmos.Time;
 
 public class PITKernelTimer : KernelTimer
 {
@@ -22,7 +22,7 @@ public class PITKernelTimer : KernelTimer
     public override void Start()
     {
         if (this._timer != null) throw new InvalidOperationException("Timer is already started");
-        Global.PIT.RegisterTimer(_timer = new PIT.PITTimer(() =>
+        Global.PIT.RegisterTimer(this._timer = new PIT.PITTimer(() =>
         {
             this._elapsedTicks += OneSecondTs * Frequency * 10;
         }, Precision, true));

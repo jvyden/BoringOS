@@ -1,14 +1,14 @@
 ﻿using System;
-using BoringOS.Kernel.Terminal;
+using BoringOS.Cosmos.Terminal;
 using Cosmos.Debug.Kernel;
 using Cosmos.System;
 using JetBrains.Annotations;
 using Console = System.Console;
 using Global = Cosmos.System.Global;
 
-namespace BoringOS.Kernel;
+namespace BoringOS.Cosmos;
 
-public class CosmosKernel : Cosmos.System.Kernel
+public class CosmosKernel : Kernel
 {
     private BoringBareMetalKernel _kernel = null!;
 
@@ -17,7 +17,7 @@ public class CosmosKernel : Cosmos.System.Kernel
         DebuggerFactory.WriteToConsole = true;
         Global.Init(this.GetTextScreen(), false, true, false, false);
 
-        _kernel = new BoringBareMetalKernel();
+        this._kernel = new BoringBareMetalKernel();
         this._kernel.OnBoot();
     }
 
@@ -55,7 +55,7 @@ public class CosmosKernel : Cosmos.System.Kernel
         }
 
         if (KeyboardManager.TryReadKey(out KeyEvent key)) 
-            HandleStartupKey(key.KeyChar);
+            this.HandleStartupKey(key.KeyChar);
 
         this._kernel.BeforeRun();
     }

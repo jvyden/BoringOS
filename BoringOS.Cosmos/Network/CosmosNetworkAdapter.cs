@@ -1,9 +1,8 @@
 using BoringOS.Network;
 using Cosmos.HAL;
-using Cosmos.System.Network;
 using Cosmos.System.Network.IPv4;
 
-namespace BoringOS.Kernel.Network;
+namespace BoringOS.Cosmos.Network;
 
 public class CosmosNetworkAdapter : NetworkAdapter
 {

@@ -6,7 +6,7 @@ using Cosmos.System.Network.Config;
 using Cosmos.System.Network.IPv4;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
 
-namespace BoringOS.Kernel.Network;
+namespace BoringOS.Cosmos.Network;
 
 public class CosmosNetworkManager : NetworkManager
 {
