@@ -38,6 +38,6 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PlugsReference Include="$(MSBuildThisFileDirectory)../BoringOS.Kernel.ThreadingPlugs/bin/$(Configuration)/$(TargetFramework)/BoringOS.Kernel.ThreadingPlugs.dll" />
+        <PlugsReference Include="$(MSBuildThisFileDirectory)../BoringOS.Kernel.ThreadingPlugs/bin/Debug/$(TargetFramework)/BoringOS.Kernel.ThreadingPlugs.dll" />
     </ItemGroup>
 </Project>
