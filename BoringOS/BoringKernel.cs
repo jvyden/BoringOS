@@ -19,7 +19,11 @@ public abstract partial class BoringKernel
     protected abstract void WriteAll(string message);
     protected abstract SystemInformation CollectSystemInfo();
 
+    #if !DEBUGMOSA
     protected virtual ITerminal InstantiateKernelTerminal() => new ConsoleTerminal();
+    #else
+    protected abstract ITerminal InstantiateKernelTerminal();
+    #endif
     public virtual KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
     protected abstract NetworkManager InstantiateNetworkManager();
     protected abstract ProcessManager InstantiateProcessManager();
@@ -28,7 +32,7 @@ public abstract partial class BoringKernel
 
     protected virtual void StartUserspace(List<Program> programs)
     {
-        ConsoleTerminal terminal = new ConsoleTerminal();
+        ITerminal terminal = this.InstantiateKernelTerminal();
         StartSession(terminal, programs);
 
         while (this.KernelIsRunning)
