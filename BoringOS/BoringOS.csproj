@@ -12,7 +12,8 @@
     </PropertyGroup>
     
     <ItemGroup Condition="$(Configuration) == 'DebugMosa'">
-        <PackageReference Include="Mosa.Korlib" Version="2.4.0.893" />
+<!--        <PackageReference Include="Mosa.Korlib" Version="2.4.0.893" />-->
+        <ProjectReference Include="..\MOSA-Project\Source\Mosa.Korlib\Mosa.Korlib.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -28,6 +29,10 @@
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
         <ProjectReference Include="..\BoringOS.Analyzers\BoringOS.Analyzers.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
         <AdditionalFiles Include="$(IntermediateOutputPath)\CommitHash" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="System\" />
     </ItemGroup>
 
     <Target Name="GitBuildInfo" AfterTargets="BeforeBuild">
