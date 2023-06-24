@@ -108,6 +108,7 @@ public class CanvasTerminal : ITerminal
         int y = this.CursorY * CharHeight;
         
         this._canvas.DrawFilledRectangle(Color.Black, x, y, this.Width - x, CharHeight);
+        this.CursorX = skip;
     }
 
     public void ClearScreen()
