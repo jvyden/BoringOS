@@ -1,0 +1,10 @@
+{
+	"profiles": {
+		"BoringOS.MOSA": {
+			"commandName": "Executable",
+			"executablePath": "dotnet",
+			"commandLineArgs": "Tools/Mosa.Tool.Launcher.dll BoringOS.MOSA.dll",
+			"workingDirectory": ""
+		}
+	}
+}
