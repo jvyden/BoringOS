@@ -30,6 +30,7 @@ public readonly struct IpAddress
 
     private static int ParseSection(ReadOnlySpan<char> ip, out byte b, bool last = false)
     {
+        #if !DEBUGMOSA
         const char separator = '.'; 
         const int maxSectionLength = 3; // "255".Length
         
@@ -47,7 +48,6 @@ public readonly struct IpAddress
             else
             {
                 b = byte.Parse(section);
-                // b = 1;
                 return i + 1;
             }
 
@@ -57,8 +57,11 @@ public readonly struct IpAddress
         if (!last) throw new FormatException("Section contains no characters");
         
         b = byte.Parse(section);
-        // b = 1;
         return 0;
+#else
+        b = 0;
+        return 0;
+#endif
     }
 
     public override string ToString()

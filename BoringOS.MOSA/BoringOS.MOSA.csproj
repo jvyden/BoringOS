@@ -19,12 +19,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MOSA-Project\Source\Mosa.Korlib\Mosa.Korlib.csproj" />
-        <PackageReference Include="Mosa.DeviceSystem" Version="2.4.0.893" />
-        <PackageReference Include="Mosa.Kernel.x86" Version="2.4.0.893" />
-        <PackageReference Include="Mosa.Platform.x86" Version="2.4.0.893" />
-        <PackageReference Include="Mosa.Runtime" Version="2.4.0.893" />
-        <PackageReference Include="Mosa.Tools.Package" Version="2.4.0.893" />
+        <PackageReference Include="Mosa.Korlib" Version="2.4.0.10011" />
+        <PackageReference Include="Mosa.DeviceSystem" Version="2.4.0.10011" />
+        <PackageReference Include="Mosa.Kernel.x86" Version="2.4.0.10011" />
+        <PackageReference Include="Mosa.Platform.x86" Version="2.4.0.10011" />
+        <PackageReference Include="Mosa.Runtime" Version="2.4.0.10011" />
+        <PackageReference Include="Mosa.Tools.Package" Version="2.4.0.10011" />
     </ItemGroup>
 
     <ItemGroup>
