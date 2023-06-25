@@ -26,7 +26,7 @@ public class ProgramGenerator : ISourceGenerator
                 .DescendantNodes()
                 .OfType<ClassDeclarationSyntax>()
                 .Where(c => c.BaseList != null)
-                .Where(c => c.BaseList.Types
+                .Where(c => c.BaseList!.Types
                     .Any(t => t.Type.ToString() == NameofProgram));
             
             foreach (ClassDeclarationSyntax? program in programs)
