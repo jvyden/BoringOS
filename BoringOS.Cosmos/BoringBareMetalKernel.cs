@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using BoringOS.Cosmos.Network;
 using BoringOS.Cosmos.Terminal;
-using BoringOS.Cosmos.Threading;
+using BoringOS.Cosmos.Time;
 using BoringOS.Network;
 using BoringOS.Programs;
 using BoringOS.Terminal;
@@ -12,6 +12,12 @@ using Cosmos.Core;
 using Cosmos.Core.Memory;
 using Cosmos.Core.Multiboot;
 using Cosmos.HAL;
+
+#if THREADING
+
+using BoringOS.Cosmos.Threading;
+
+#endif
 
 namespace BoringOS.Cosmos;
 
@@ -104,9 +110,13 @@ public class BoringBareMetalKernel : BoringKernel
     };
 
     protected override NetworkManager InstantiateNetworkManager() => new CosmosNetworkManager();
+#if THREADING
     protected override ProcessManager InstantiateProcessManager() => new ZarloProcessManager();
-
     // Use UtcNowKernelTimer, uses RTC to avoid usage of PIT
     // TODO: Make a thread-based timer
     public override KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
+#else
+    protected override ProcessManager InstantiateProcessManager() => new FakeProcessManager();
+    public override KernelTimer InstantiateTimer() => new PITKernelTimer();
+#endif
 }

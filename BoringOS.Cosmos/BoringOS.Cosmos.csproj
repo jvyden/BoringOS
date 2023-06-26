@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <Platform>cosmos</Platform>
@@ -25,21 +24,23 @@
         <DefineConstants>Debug;TRACE;VBE</DefineConstants>
         <CompileVBEMultiboot>true</CompileVBEMultiboot>
     </PropertyGroup>
+    
+    <ItemGroup Condition="false">
+        <PackageReference Include="Zarlo.Cosmos.Threading" Version="0.1.1-alpha.36" />
+        <ProjectReference Include="..\BoringOS.Cosmos.ThreadingPlugs\BoringOS.Cosmos.ThreadingPlugs.csproj" />
+        <PlugsReference Include="$(MSBuildThisFileDirectory)../BoringOS.Cosmos.ThreadingPlugs/bin/Debug/$(TargetFramework)/BoringOS.Cosmos.ThreadingPlugs.dll" />
+    </ItemGroup>
+    
+    <PropertyGroup Condition="false">
+        <DefineConstants>TRACE;THREADING</DefineConstants>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.Plugs" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-        <PackageReference Include="Zarlo.Cosmos.Threading" Version="0.1.1-alpha.36" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\BoringOS.Cosmos.ThreadingPlugs\BoringOS.Cosmos.ThreadingPlugs.csproj" />
-      <ProjectReference Include="..\BoringOS\BoringOS.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <PlugsReference Include="$(MSBuildThisFileDirectory)../BoringOS.Cosmos.ThreadingPlugs/bin/Debug/$(TargetFramework)/BoringOS.Cosmos.ThreadingPlugs.dll" />
+        
+        <ProjectReference Include="..\BoringOS\BoringOS.csproj" />
     </ItemGroup>
 </Project>

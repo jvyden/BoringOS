@@ -1,3 +1,5 @@
+#if THREADING
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using BoringOS.Cosmos.ThreadingPlugs;
@@ -27,3 +29,5 @@ public class ZarloProcessManager : ProcessManager
         Thread.Sleep(ms);
     }
 }
+
+#endif
