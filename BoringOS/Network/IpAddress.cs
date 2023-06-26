@@ -5,27 +5,27 @@ public readonly struct IpAddress
     public static readonly IpAddress Default = new(0, 0, 0, 0);
     public static readonly IpAddress Local = new(127, 0, 0, 1);
     
-    private readonly byte _a;
-    private readonly byte _b;
-    private readonly byte _c;
-    private readonly byte _d;
+    public readonly byte A;
+    public readonly byte B;
+    public readonly byte C;
+    public readonly byte D;
 
     public IpAddress(byte a, byte b, byte c, byte d)
     {
-        this._a = a;
-        this._b = b;
-        this._c = c;
-        this._d = d;
+        this.A = a;
+        this.B = b;
+        this.C = c;
+        this.D = d;
     }
 
     public IpAddress(ReadOnlySpan<char> ip)
     {
         int offset = 0;
 
-        offset += ParseSection(ip[offset..], out _a);
-        offset += ParseSection(ip[offset..], out _b);
-        offset += ParseSection(ip[offset..], out _c);
-        ParseSection(ip[offset..], out _d, true);
+        offset += ParseSection(ip[offset..], out this.A);
+        offset += ParseSection(ip[offset..], out this.B);
+        offset += ParseSection(ip[offset..], out this.C);
+        ParseSection(ip[offset..], out this.D, true);
     }
 
     private static int ParseSection(ReadOnlySpan<char> ip, out byte b, bool last = false)
@@ -68,29 +68,29 @@ public readonly struct IpAddress
         Span<char> address = stackalloc char[maxLength];
 
         int offset = 0;
-        this._a.TryFormat(address, out int written);
+        this.A.TryFormat(address, out int written);
         offset += written;
         address[offset++] = separator;
         
-        this._b.TryFormat(address[offset..], out written);
+        this.B.TryFormat(address[offset..], out written);
         offset += written;
         address[offset++] = separator;
         
-        this._c.TryFormat(address[offset..], out written);
+        this.C.TryFormat(address[offset..], out written);
         offset += written;
         address[offset++] = separator;
         
-        this._d.TryFormat(address[offset..], out _);
+        this.D.TryFormat(address[offset..], out _);
         
         return address.ToString();
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(this._a, this._b, this._c, this._d);
+        return HashCode.Combine(this.A, this.B, this.C, this.D);
     }
 
-    public bool Equals(IpAddress other) => this._a == other._a && this._b == other._b && this._c == other._c && this._d == other._d;
+    public bool Equals(IpAddress other) => this.A == other.A && this.B == other.B && this.C == other.C && this.D == other.D;
 
     public bool Equals(string other) => this.ToString() == other;
 

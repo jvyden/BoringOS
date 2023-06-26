@@ -1,5 +1,7 @@
 using System;
+using BoringOS.Cosmos.Network.Clients;
 using BoringOS.Network;
+using BoringOS.Network.Clients;
 using Cosmos.HAL;
 using Cosmos.HAL.Network;
 using Cosmos.System.Network.Config;
@@ -13,8 +15,7 @@ public class CosmosNetworkManager : NetworkManager
     protected override void InitializeInternal()
     {
         NetworkInit.Init();
-        // NetworkStack.Initialize(); (already done in Global.Init)
-        
+
         Console.WriteLine("    Network stack initialized");
 
         if (NetworkDevice.Devices.Count <= 0)
@@ -48,10 +49,10 @@ public class CosmosNetworkManager : NetworkManager
             Console.WriteLine("    An IP address was not obtained. Setting one manually...");
 
             Address ip = new Address(192, 168, 1, 157);
-            Address subnet = new Address(255, 255, 255, 0);
+            Address mask = new Address(255, 255, 255, 0);
             Address gateway = new Address(192, 168, 1, 1);
             
-            IPConfig.Enable(network, ip, subnet, gateway);
+            IPConfig.Enable(network, ip, mask, gateway);
             
             Console.Write("    Manually set IP to ");
             Console.WriteLine(ip);
@@ -60,4 +61,6 @@ public class CosmosNetworkManager : NetworkManager
         
         this.AddAdapter(new CosmosNetworkAdapter(network, address));
     }
+
+    public override PingClient GetPingClient() => new CosmosPingClient();
 }

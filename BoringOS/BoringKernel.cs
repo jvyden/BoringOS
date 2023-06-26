@@ -47,7 +47,14 @@ public abstract partial class BoringKernel
             BoringShell shell = new BoringShell(session);
             while (this.KernelIsRunning)
             {
-                shell.InputCycle();
+                try
+                {
+                    shell.InputCycle();
+                }
+                catch(Exception e)
+                {
+                    HandleCrash(e, terminal);
+                }
             }
         });
     }
@@ -101,7 +108,7 @@ public abstract partial class BoringKernel
         {
             try
             {
-                this.HandleCrash(e);
+                this.HandleCrash(e, this.KernelTerminal);
             }
             catch(Exception ee)
             {
@@ -146,43 +153,42 @@ public abstract partial class BoringKernel
         }
     }
 
-    private void HandleCrash(Exception e)
+    private void HandleCrash(Exception e, ITerminal terminal)
     {
-        // TODO: use terminal if possible
         this.WriteAll("Unhandled exception: " + e + '\n');
         this.WriteAll("Crash occurred - please see kernel terminal for instructions\n");
-        // this.KernelTerminal.BackgroundColor = ConsoleColor.DarkRed;
-        // this.KernelTerminal.ForegroundColor = ConsoleColor.White;
-        this.KernelTerminal.ClearScreen();
-        this.KernelTerminal.SetCursorPosition(0, 0);
+        // terminal.BackgroundColor = ConsoleColor.DarkRed;
+        // terminal.ForegroundColor = ConsoleColor.White;
+        terminal.ClearScreen();
+        terminal.SetCursorPosition(0, 0);
         
-        this.KernelTerminal.WriteString(BoringVersionInformation.FullVersion);
+        terminal.WriteString(BoringVersionInformation.FullVersion);
         
-        this.KernelTerminal.WriteChar('\n');
+        terminal.WriteChar('\n');
         PrintException(e);
-        this.KernelTerminal.WriteChar('\n');
+        terminal.WriteChar('\n');
         
-        this.KernelTerminal.WriteString("The above exception went entirely unhandled - the kernel had to step in.\n");
-        this.KernelTerminal.WriteString("This is a particularly bad crash, as it should have been handled appropriately\nby the session.");
-        this.KernelTerminal.WriteString(" Alas, it was not and you have now been brought here.\n");
+        terminal.WriteString("The above exception went entirely unhandled - the kernel had to step in.\n");
+        terminal.WriteString("This is a particularly bad crash, as it should have been handled appropriately\nby the session.");
+        terminal.WriteString(" Alas, it was not and you have now been brought here.\n");
         
-        this.KernelTerminal.WriteChar('\n');
-        this.KernelTerminal.WriteString("If you do not know what you are doing, press 'H' to halt the system now.");
-        this.KernelTerminal.WriteChar('\n');
+        terminal.WriteChar('\n');
+        terminal.WriteString("If you do not know what you are doing, press 'H' to halt the system now.");
+        terminal.WriteChar('\n');
         
         while (true)
         {
-            this.KernelTerminal.WriteString("Press H to halt, D to take a memory dump, or C to continue: ");
-            char c = this.KernelTerminal.ReadKey().KeyChar;
+            terminal.WriteString("Press H to halt, D to take a memory dump, or C to continue: ");
+            char c = terminal.ReadKey().KeyChar;
 
             if (c == 'c')
             {
                 // Console.BackgroundColor = ConsoleColor.Black;
                 // Console.ForegroundColor = ConsoleColor.Gray;
-                this.KernelTerminal.ClearScreen();
-                this.KernelTerminal.WriteString("You have been dumped back to wherever you were.\n");
-                this.KernelTerminal.WriteString("If any problems persist, please halt and reboot the computer.\n");
-                this.KernelTerminal.WriteChar('\n');
+                terminal.ClearScreen();
+                terminal.WriteString("You have been dumped back to wherever you were.\n");
+                terminal.WriteString("If any problems persist, please halt and reboot the computer.\n");
+                terminal.WriteChar('\n');
                 break;
             }
 
@@ -194,18 +200,18 @@ public abstract partial class BoringKernel
             
             if (c == 'd')
             {
-                this.KernelTerminal.WriteString("Unimplemented\n");
+                terminal.WriteString("Unimplemented\n");
             }
             
 #if DEBUG
             if (c == '0')
             {
-                this.KernelTerminal.WriteString("Crashing again on purpose\n");
+                terminal.WriteString("Crashing again on purpose\n");
                 throw e;
             }
 #endif
 
-            this.KernelTerminal.WriteString("Invalid key\n");
+            terminal.WriteString("Invalid key\n");
         }
     }
 }

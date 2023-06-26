@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+using BoringOS.Network.Clients;
 
 namespace BoringOS.Network;
 
@@ -16,16 +16,19 @@ public abstract class NetworkManager
     protected abstract void InitializeInternal();
 
     public const int MaxAdapters = 4; // TODO: support multiple adapters
-    private NetworkAdapter? _adapter;
+    private byte _addedAdapters = 0;
+    private readonly NetworkAdapter[] _adapters = new NetworkAdapter[4];
 
     protected void AddAdapter(NetworkAdapter adapter)
     {
-        this._adapter = adapter;
+        if (this._addedAdapters == MaxAdapters - 1)
+            throw new Exception($"Too many adapters added. You may only add {MaxAdapters}.");
+        
+        this._adapters[this._addedAdapters] = adapter;
+        this._addedAdapters++;
     }
 
-    public IEnumerable<NetworkAdapter> GetAdapters()
-    {
-        if(this._adapter == null) return new List<NetworkAdapter>(0);
-        return new List<NetworkAdapter>(1) { this._adapter };
-    }
+    public IEnumerable<NetworkAdapter> GetAdapters() => new List<NetworkAdapter>(this._adapters.Take(this._addedAdapters));
+
+    public abstract PingClient GetPingClient();
 }
