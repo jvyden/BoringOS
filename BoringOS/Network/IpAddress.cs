@@ -46,7 +46,8 @@ public readonly struct IpAddress
             }
             else
             {
-                b = byte.Parse(section);
+                // TODO: implement byte.Parse(ReadOnlySpan<char>) in COSMOS
+                b = byte.Parse(section.ToString());
                 // b = 1;
                 return i + 1;
             }
@@ -56,7 +57,7 @@ public readonly struct IpAddress
 
         if (!last) throw new FormatException("Section contains no characters");
         
-        b = byte.Parse(section);
+        b = byte.Parse(section.ToString());
         // b = 1;
         return 0;
     }

@@ -106,8 +106,12 @@ public class BoringShell
         }
         
         this._session.Terminal.WriteChar('\n');
+
+        List<string> args = line.Split(' ')
+            .Select(a => a.Trim())
+            .ToList();
         
-        ProcessLine(line.Split(' '));
+        ProcessLine(args);
     }
 
     private void ProcessLine(IReadOnlyList<string> args)

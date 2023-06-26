@@ -15,7 +15,7 @@ public abstract class NetworkManager
 
     protected abstract void InitializeInternal();
 
-    public const int MaxAdapters = 4; // TODO: support multiple adapters
+    public const int MaxAdapters = 4;
     private byte _addedAdapters = 0;
     private readonly NetworkAdapter[] _adapters = new NetworkAdapter[4];
 

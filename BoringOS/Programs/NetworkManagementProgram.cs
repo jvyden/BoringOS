@@ -16,9 +16,6 @@ public class NetworkManagementProgram : Program
         terminal.WriteChar('\n');
         terminal.WriteString("ls: List adapters\n");
         terminal.WriteString("ping: Time how long it takes for a round trip\n");
-#if DEBUG
-        terminal.WriteString("dbgip: Parse and serialize IP\n");
-#endif
 
         return 1;
     }
@@ -36,6 +33,7 @@ public class NetworkManagementProgram : Program
     private static void PingIp(ITerminal terminal, string ip, NetworkManager network)
     {
         IpAddress target = new IpAddress(ip);
+        Console.WriteLine(target.ToString());
         
         using PingClient client = network.GetPingClient();
         PingReply reply = client.PingOnce(target);
@@ -49,20 +47,11 @@ public class NetworkManagementProgram : Program
         }
     }
 
-    private static void DebugIp(ITerminal terminal, string ip)
-    {
-        IpAddress address = new IpAddress(ip);
-        Thread.Sleep(1000);
-        terminal.WriteString(address.ToString());
-        terminal.WriteChar('\n');
-    }
-
     public override byte Invoke(string[] args, BoringSession session)
     {
         if (args.Length == 0) return ShowHelp(session.Terminal);
         if (args[0] == "ls") ShowAdapters(session.Terminal, session.Kernel.Network.GetAdapters());
-        if(args[0] == "ping") PingIp(session.Terminal, args[1], session.Kernel.Network);
-        if (args[0] == "dbgip" && args.Length >= 2) DebugIp(session.Terminal, args[1]);
+        if (args[0] == "ping") PingIp(session.Terminal, args[1], session.Kernel.Network);
 
         return 0;
     }
