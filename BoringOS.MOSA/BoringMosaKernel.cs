@@ -37,7 +37,6 @@ public class BoringMosaKernel : BoringKernel
 
     protected override ITerminal InstantiateKernelTerminal()
     {
-        Screen.WriteLine(InputManager.Keyboards.Count.ToString());
         return new ScreenTerminal(InputManager.Keyboards[0]);
     }
 

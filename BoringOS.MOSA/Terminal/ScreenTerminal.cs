@@ -8,10 +8,12 @@ namespace BoringOS.MOSA.Terminal;
 public class ScreenTerminal : ITerminal
 {
     private readonly IKeyboard _keyboard;
+    private static readonly ConsoleKeyInfo EmptyChar = new('\0', ConsoleKey.None, false, false, false);
 
     public ScreenTerminal(IKeyboard keyboard)
     {
         _keyboard = keyboard;
+        this.ClearScreen();
     }
 
     public ConsoleKeyInfo ReadKey()
@@ -29,30 +31,31 @@ public class ScreenTerminal : ITerminal
 
     public int CursorX
     {
-        get => (int)Screen.Row;
+        get => (int)Screen.Column;
         set
         {
-            Screen.SetCursor((uint)value, Screen.Column);
+            Screen.Column = (uint)value;
             Screen.UpdateCursor();
         }
     }
 
     public int CursorY
     {
-        get => (int)Screen.Column;
+        get => (int)Screen.Row;
         set
         {
-            Screen.SetCursor(Screen.Row, (uint)value);
+            Screen.Row = (uint)value;
             Screen.UpdateCursor();
         }
     }
 
-    public int Width => (int)Screen.Rows;
-    public int Height => (int)Screen.Columns;
+    public int Width => (int)Screen.Columns;
+    public int Height => (int)Screen.Rows;
     public void SetCursorPosition(int x, int y)
     {
-        Screen.SetCursor((uint)y, (uint)x);
-        Screen.UpdateCursor();
+        this.CursorX = x;
+        this.CursorY = y;
+        // Screen.SetCursor((uint)y, (uint)x);
     }
 
     public void WriteChar(char c)
@@ -70,6 +73,13 @@ public class ScreenTerminal : ITerminal
             return;
         }
 
+        byte b = (byte)c;
+        if (b < 0x20 || b > 0x7E)
+        {
+            Screen.Write('?');
+            return;
+        }
+        
         Screen.Write(c);
     }
 
@@ -87,11 +97,10 @@ public class ScreenTerminal : ITerminal
         }
 
         this.CursorX = 0;
-        this.CursorY--;
     }
 
     public void ClearScreen()
     {
-        // Screen.Clear();
+        Screen.Clear();
     }
 }

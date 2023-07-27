@@ -29,7 +29,7 @@ public class BoringShell
         while (true)
         {
             ConsoleKeyInfo key = this._session.Terminal.ReadKey();
-            if (key.Key == ConsoleKey.Enter) break;
+            if (key.Key == ConsoleKey.Enter || key.KeyChar == '\0') break;
 
             if (key.Key == ConsoleKey.UpArrow)
             {
@@ -39,7 +39,8 @@ public class BoringShell
                 
                 continue;
             }
-            else if (key.Key == ConsoleKey.DownArrow)
+
+            if (key.Key == ConsoleKey.DownArrow)
             {
                 historyIndex--;
                 line = ShowHistory(historyIndex);
@@ -47,7 +48,7 @@ public class BoringShell
                 
                 continue;
             }
-            
+
             // Text editing
             if (key.Key == ConsoleKey.LeftArrow)
                 lineIndex = Math.Clamp(lineIndex - 1, 0, line.Length);
