@@ -1,4 +1,5 @@
 using BoringOS.MOSA.Network;
+using BoringOS.MOSA.Terminal;
 using BoringOS.Network;
 using BoringOS.Terminal;
 using BoringOS.Threading;
@@ -36,8 +37,8 @@ public class BoringMosaKernel : BoringKernel
 
     protected override ITerminal InstantiateKernelTerminal()
     {
-        // throw new Exception();
-        return null;
+        Screen.WriteLine(InputManager.Keyboards.Count.ToString());
+        return new ScreenTerminal(InputManager.Keyboards[0]);
     }
 
     protected override NetworkManager InstantiateNetworkManager()

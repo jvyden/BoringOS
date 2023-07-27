@@ -1,6 +1,7 @@
 using BoringOS.Emulator.Network;
 using BoringOS.Emulator.Threading;
 using BoringOS.Network;
+using BoringOS.Terminal;
 using BoringOS.Threading;
 
 namespace BoringOS.Emulator;
@@ -37,6 +38,8 @@ public class BoringEmulatedKernel : BoringKernel
             CPUBrand = "Emulated Kernel"
         };
     }
+
+    protected override ITerminal InstantiateKernelTerminal() => new ConsoleTerminal();
 
     protected override NetworkManager InstantiateNetworkManager() => new EmulatedNetworkManager();
     protected override ProcessManager InstantiateProcessManager() => new TaskProcessManager();

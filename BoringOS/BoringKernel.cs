@@ -6,6 +6,8 @@ using BoringOS.Time;
 
 namespace BoringOS;
 
+#nullable disable
+
 public abstract partial class BoringKernel
 {
     protected ITerminal KernelTerminal = null!;
@@ -70,7 +72,6 @@ public abstract partial class BoringKernel
     public void BeforeRun()
     {
         // Set up terminal
-        Console.WriteLine("  Initializing terminal");
         this.KernelTerminal = this.InstantiateKernelTerminal();
         
         this.KernelTerminal.WriteString("  Gathering SystemInformation\n");
