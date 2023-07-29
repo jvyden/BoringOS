@@ -13,5 +13,5 @@ public class EmulatedNetworkAdapter : NetworkAdapter
 
     public override string DeviceName => "Emulated Network Adapter";
     public override string Identifier { get; }
-    public sealed override MacAddress MacAddress { get; protected init; }
+    public sealed override MacAddress MacAddress { get; protected set; }
 }

@@ -20,7 +20,7 @@ public class BoringSession
     }
 
     private static uint _sessionIncrement = 0;
-    public uint SessionId { get; private init; }
+    public uint SessionId { get; private set; }
 
     public readonly ITerminal Terminal;
     public readonly BoringKernel Kernel;

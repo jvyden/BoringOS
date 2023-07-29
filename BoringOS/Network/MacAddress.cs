@@ -23,6 +23,7 @@ public readonly struct MacAddress
     
     public override string ToString()
     {
+#if !DEBUGMOSA
         const char separator = ':';
         const int maxLength = 17; // "01:23:45:67:89:AB".Length
         Span<char> address = stackalloc char[maxLength];
@@ -53,5 +54,8 @@ public readonly struct MacAddress
         this._f.TryFormat(address[offset..], out _, format);
         
         return address.ToString();
+#else
+        throw new NotImplementedException();
+#endif
     }
 }

@@ -6,6 +6,8 @@ using BoringOS.Time;
 
 namespace BoringOS;
 
+#nullable disable
+
 public abstract partial class BoringKernel
 {
     protected ITerminal KernelTerminal = null!;
@@ -19,7 +21,11 @@ public abstract partial class BoringKernel
     protected abstract void WriteAll(string message);
     protected abstract SystemInformation CollectSystemInfo();
 
+    #if !DEBUGMOSA
     protected virtual ITerminal InstantiateKernelTerminal() => new ConsoleTerminal();
+    #else
+    protected abstract ITerminal InstantiateKernelTerminal();
+    #endif
     public virtual KernelTimer InstantiateTimer() => new UtcNowKernelTimer();
     protected abstract NetworkManager InstantiateNetworkManager();
     protected abstract ProcessManager InstantiateProcessManager();
@@ -28,7 +34,7 @@ public abstract partial class BoringKernel
 
     protected virtual void StartUserspace(List<Program> programs)
     {
-        ConsoleTerminal terminal = new ConsoleTerminal();
+        ITerminal terminal = this.InstantiateKernelTerminal();
         StartSession(terminal, programs);
 
         while (this.KernelIsRunning)
@@ -73,7 +79,6 @@ public abstract partial class BoringKernel
     public void BeforeRun()
     {
         // Set up terminal
-        Console.WriteLine("  Initializing terminal");
         this.KernelTerminal = this.InstantiateKernelTerminal();
         
         this.KernelTerminal.WriteString("  Gathering SystemInformation\n");

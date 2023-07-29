@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace BoringOS.Threading;
 
 /// <summary>
@@ -18,6 +20,6 @@ public class FakeProcessManager : ProcessManager
 
     public override void Sleep(int ms)
     {
-        Thread.Sleep(ms);
+        // Thread.Sleep(ms);
     }
 }

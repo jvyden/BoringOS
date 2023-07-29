@@ -30,6 +30,7 @@ public readonly struct IpAddress
 
     private static int ParseSection(ReadOnlySpan<char> ip, out byte b, bool last = false)
     {
+        #if !DEBUGMOSA
         const char separator = '.'; 
         const int maxSectionLength = 3; // "255".Length
         
@@ -60,10 +61,16 @@ public readonly struct IpAddress
         b = byte.Parse(section.ToString());
         // b = 1;
         return 0;
+#else
+        b = 0;
+        return 0;
+#endif
     }
 
     public override string ToString()
     {
+        // TODO: Implement MOSA
+#if !DEBUGMOSA
         const char separator = '.';
         const int maxLength = 15; // "255.255.255.255".Length
         Span<char> address = stackalloc char[maxLength];
@@ -84,11 +91,19 @@ public readonly struct IpAddress
         this.D.TryFormat(address[offset..], out _);
         
         return address.ToString();
+#else
+        return this._a + '.' + this._b + '.' + this._c + '.' + this._d.ToString();
+#endif
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(this.A, this.B, this.C, this.D);
+        int hash = 0;
+        hash |= (this.A & 0xFF) << 24;
+        hash |= (this.B & 0xFF) << 16;
+        hash |= (this.C & 0xFF) << 8;
+        hash |= (this.D & 0xFF);
+        return hash;
     }
 
     public bool Equals(IpAddress other) => this.A == other.A && this.B == other.B && this.C == other.C && this.D == other.D;

@@ -29,7 +29,7 @@ public class BoringShell
         while (true)
         {
             ConsoleKeyInfo key = this._session.Terminal.ReadKey();
-            if (key.Key == ConsoleKey.Enter) break;
+            if (key.Key == ConsoleKey.Enter || key.KeyChar == '\0') break;
 
             if (key.Key == ConsoleKey.UpArrow)
             {
@@ -39,7 +39,8 @@ public class BoringShell
                 
                 continue;
             }
-            else if (key.Key == ConsoleKey.DownArrow)
+
+            if (key.Key == ConsoleKey.DownArrow)
             {
                 historyIndex--;
                 line = ShowHistory(historyIndex);
@@ -47,7 +48,7 @@ public class BoringShell
                 
                 continue;
             }
-            
+
             // Text editing
             if (key.Key == ConsoleKey.LeftArrow)
                 lineIndex = Math.Clamp(lineIndex - 1, 0, line.Length);
@@ -119,13 +120,27 @@ public class BoringShell
         if (args.Count == 0) return;
         string programName = args[0];
 
-        Program? program = this._session.Programs.FirstOrDefault(p => p.Name == programName);
+        Program? program = null;
+        foreach (Program? p in this._session.Programs)
+        {
+            if (p.Name != programName) continue;
+            
+            program = p;
+            break;
+        }
+
         if (program == null)
         {
             this._session.Terminal.WriteString($"{programName}: Program not found\n");
             return;
         }
 
-        program.Invoke(args.Skip(1).ToArray(), this._session);
+        string[] argsNoBase = new string [args.Count - 1];
+        for (int i = 1; i < args.Count; i++)
+        {
+            argsNoBase[i - 1] = args[i];
+        }
+
+        program.Invoke(argsNoBase, this._session);
     }
 }

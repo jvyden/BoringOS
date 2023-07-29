@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <DebugType>full</DebugType>
+        <LangVersion>11.0</LangVersion>
+        <OutputPath>bin</OutputPath>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Configurations>Debug;Release;DebugMosa</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <DisableStandardFrameworkResolution>true</DisableStandardFrameworkResolution>
+        <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+        <UseAppHost>false</UseAppHost>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Mosa.Korlib" Version="2.4.0.11000" />
+        <PackageReference Include="Mosa.DeviceSystem" Version="2.4.0.11000" />
+        <PackageReference Include="Mosa.Kernel.x86" Version="2.4.0.11000" />
+        <PackageReference Include="Mosa.Platform.x86" Version="2.4.0.11000" />
+        <PackageReference Include="Mosa.Runtime" Version="2.4.0.11000" />
+        <PackageReference Include="Mosa.Tools.Package" Version="2.4.0.11000" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BoringOS\BoringOS.csproj" />
+    </ItemGroup>
+
+
+</Project>
