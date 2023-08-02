@@ -12,7 +12,7 @@
     </PropertyGroup>
     
     <ItemGroup Condition="$(Configuration) == 'DebugMosa'">
-        <PackageReference Include="Mosa.Korlib" Version="2.4.0.11000" />
+        <PackageReference Include="Mosa.Korlib" Version="2.4.0.11002" />
 <!--        <ProjectReference Include="..\MOSA-Project\Source\Mosa.Korlib\Mosa.Korlib.csproj" />-->
     </ItemGroup>
 

@@ -22,12 +22,12 @@ public static class Program
         {
             _serviceManager = new ServiceManager();
             _deviceService = new DeviceService();
-
-            _serviceManager.AddService(_deviceService);
-
-            _hal = new HardwareAbstractionLayer();
+            
             Screen.WriteLine("Initializing hardware...");
+            _hal = new HardwareAbstractionLayer();
             Mosa.DeviceSystem.Setup.Initialize(_hal, _deviceService.ProcessInterrupt);
+            
+            _serviceManager.AddService(_deviceService);
             _deviceService.RegisterDeviceDriver(Mosa.DeviceDriver.Setup.GetDeviceDriverRegistryEntries());
             _deviceService.Initialize(new X86System(), null);
             
