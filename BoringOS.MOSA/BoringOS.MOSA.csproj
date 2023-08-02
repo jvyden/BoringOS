@@ -18,6 +18,10 @@
         <UseAppHost>false</UseAppHost>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'DebugMosa' ">
+      <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Mosa.Korlib" Version="2.4.0.11000" />
         <PackageReference Include="Mosa.DeviceSystem" Version="2.4.0.11000" />

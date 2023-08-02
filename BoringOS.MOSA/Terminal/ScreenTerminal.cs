@@ -1,4 +1,5 @@
 using System;
+using BoringOS.MOSA.Hardware;
 using BoringOS.Terminal;
 using Mosa.DeviceSystem;
 using Mosa.Kernel.x86;
@@ -13,20 +14,12 @@ public class ScreenTerminal : ITerminal
     public ScreenTerminal(IKeyboard keyboard)
     {
         _keyboard = keyboard;
-        this.ClearScreen();
+        // this.ClearScreen();
     }
 
     public ConsoleKeyInfo ReadKey()
     {
-        while (true)
-        {
-            Key key = _keyboard.GetKeyPressed();
-
-            if (key == null) continue;
-            if (key.KeyType == KeyType.NoKey) continue;
-
-            return new ConsoleKeyInfo(key.Character, ConsoleKey.None, key.Shift, key.Alt, key.Control);
-        }
+        return InputManager.WaitForKey();
     }
 
     public int CursorX

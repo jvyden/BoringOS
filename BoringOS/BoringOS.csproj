@@ -24,6 +24,10 @@
         <Configurations>Debug;Release;DebugMosa</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'DebugMosa' ">
+      <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
     
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />

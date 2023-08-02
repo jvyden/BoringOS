@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using BoringOS.Network;
 using BoringOS.Programs;
 using BoringOS.Terminal;
@@ -140,6 +141,13 @@ public abstract partial class BoringKernel
     {
         this.KernelIsRunning = false;
         return true;
+    }
+
+    [DoesNotReturn]
+    public virtual bool Halt()
+    {
+        while(true) {}
+        // ReSharper disable once FunctionNeverReturns
     }
 
     protected virtual void PrintException(Exception e)

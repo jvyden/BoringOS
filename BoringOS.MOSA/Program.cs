@@ -64,6 +64,11 @@ public static class Program
 
     public static void Loop()
     {
-        _kernel.Run();
+        while (_kernel.KernelIsRunning)
+        {
+            _kernel.Run();
+        }
+
+        _kernel.Halt();
     }
 }

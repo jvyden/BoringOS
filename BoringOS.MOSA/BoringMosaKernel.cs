@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics.CodeAnalysis;
 using BoringOS.MOSA.Hardware;
 using BoringOS.MOSA.Network;
 using BoringOS.MOSA.Terminal;
@@ -5,6 +7,7 @@ using BoringOS.Network;
 using BoringOS.Terminal;
 using BoringOS.Threading;
 using Mosa.Kernel.x86;
+using Mosa.Runtime.x86;
 
 namespace BoringOS.MOSA;
 
@@ -34,6 +37,33 @@ public class BoringMosaKernel : BoringKernel
             CPUBrand = "Bogus Data",
             MemoryCountKilobytes = 0,
         };
+    }
+    
+    protected override void PrintException(Exception e)
+    {
+        while (true)
+        {
+            this.KernelTerminal.WriteString(e.ToString());
+            this.KernelTerminal.WriteChar('\n');
+            Panic.DumpStackTrace();
+            if (e.InnerException != null)
+            {
+                e = e.InnerException;
+                continue;
+            }
+
+            break;
+        }
+    }
+
+    [DoesNotReturn]
+    public override bool Halt()
+    {
+        while (true)
+        {
+            Native.Hlt();
+        }
+        // ReSharper disable once FunctionNeverReturns
     }
 
     protected override ITerminal InstantiateKernelTerminal()
