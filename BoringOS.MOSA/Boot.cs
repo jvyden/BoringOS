@@ -20,6 +20,8 @@ public static class Boot
         Kernel.Setup();
         IDT.SetInterruptHandler(ProcessInterrupt);
 
+        Screen.BackgroundColor = ScreenColor.Black;
+        Screen.Color = ScreenColor.Gray;
         Program.Setup();
 
         for (;;)
@@ -29,12 +31,6 @@ public static class Boot
 
     public static void ProcessInterrupt(uint interrupt, uint errorCode)
     {
-        // if (interrupt != 32)
-        // {
-        //     Screen.Write("Interrupt: ");
-        //     Screen.WriteLine(interrupt.ToString());
-        // }
-        
         if (interrupt >= 0x20 && interrupt < 0x30)
             HAL.ProcessInterrupt((byte)(interrupt - 0x20));
         

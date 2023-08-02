@@ -1,21 +1,13 @@
 using System;
 using BoringOS.MOSA.Hardware;
 using BoringOS.Terminal;
-using Mosa.DeviceSystem;
 using Mosa.Kernel.x86;
 
 namespace BoringOS.MOSA.Terminal;
 
 public class ScreenTerminal : ITerminal
 {
-    private readonly IKeyboard _keyboard;
     private static readonly ConsoleKeyInfo EmptyChar = new('\0', ConsoleKey.None, false, false, false);
-
-    public ScreenTerminal(IKeyboard keyboard)
-    {
-        _keyboard = keyboard;
-        // this.ClearScreen();
-    }
 
     public ConsoleKeyInfo ReadKey()
     {

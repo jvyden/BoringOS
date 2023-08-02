@@ -7,6 +7,7 @@ using BoringOS.Network;
 using BoringOS.Terminal;
 using BoringOS.Threading;
 using Mosa.Kernel.x86;
+using Mosa.Runtime;
 using Mosa.Runtime.x86;
 
 namespace BoringOS.MOSA;
@@ -21,7 +22,7 @@ public class BoringMosaKernel : BoringKernel
 
     public override long GetUsedMemory()
     {
-        return 0;
+        return PageFrameAllocator.TotalPagesInUse * PageFrameAllocator.PageSize;
     }
 
     protected override void WriteAll(string message)
@@ -33,9 +34,9 @@ public class BoringMosaKernel : BoringKernel
     {
         return new SystemInformation
         {
-            CPUVendor = "Mosa",
-            CPUBrand = "Bogus Data",
-            MemoryCountKilobytes = 0,
+            CPUVendor = "MOSA",
+            CPUBrand = "CPU",
+            MemoryCountKilobytes = PageFrameAllocator.TotalPages * PageFrameAllocator.PageSize * 1024,
         };
     }
     
@@ -45,7 +46,7 @@ public class BoringMosaKernel : BoringKernel
         {
             this.KernelTerminal.WriteString(e.ToString());
             this.KernelTerminal.WriteChar('\n');
-            Panic.DumpStackTrace();
+            // Panic.DumpStackTrace();
             if (e.InnerException != null)
             {
                 e = e.InnerException;
@@ -68,7 +69,7 @@ public class BoringMosaKernel : BoringKernel
 
     protected override ITerminal InstantiateKernelTerminal()
     {
-        return new ScreenTerminal(InputManager.Keyboards[0]);
+        return new ScreenTerminal();
     }
 
     protected override NetworkManager InstantiateNetworkManager()

@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Mosa.DeviceDriver.ISA;
 using Mosa.DeviceDriver.ScanCodeMap;
 using Mosa.DeviceSystem;
@@ -39,12 +40,27 @@ public static class InputManager
     {
         foreach (Keyboard device in Keyboards)
         {
-            Key? key = device.GetKeyPressed();
+            Key? key = null;
+            const byte tries = 2;// # of tries to get a key
+            for (int i = 0; i < tries; i++)
+            {
+                key = device.GetKeyPressed();
+                if (key != null) break;
+                
+                Console.WriteLine("Key was null");
+            }
+
+            if (key == null)
+            {
+                Console.WriteLine("Couldn't get a key");
+                continue;
+            }
+
             ConsoleKeyInfo? consoleKey = ConvertFromMosa(key);
-            if(consoleKey == null) continue;
+            Debug.Assert(consoleKey != null);
             
             // ReSharper disable once InconsistentlySynchronizedField (don't lock for writes)
-            KeyQueue.Enqueue(consoleKey.Value);
+            KeyQueue.Enqueue(consoleKey!.Value);
         }
     }
 

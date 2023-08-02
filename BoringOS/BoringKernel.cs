@@ -54,14 +54,14 @@ public abstract partial class BoringKernel
             BoringShell shell = new BoringShell(session);
             while (this.KernelIsRunning)
             {
-                try
-                {
+                // try
+                // {
                     shell.InputCycle();
-                }
-                catch(Exception e)
-                {
-                    HandleCrash(e, terminal);
-                }
+                // }
+                // catch(Exception e)
+                // {
+                    // HandleCrash(e, terminal);
+                // }
             }
         });
     }
@@ -86,7 +86,7 @@ public abstract partial class BoringKernel
         this.SystemInformation = this.CollectSystemInfo();
 
         this.KernelTerminal.WriteString($"    CPU: {this.SystemInformation.CPUVendor} {this.SystemInformation.CPUBrand}, ");
-        this.KernelTerminal.WriteString($"{this.SystemInformation.MemoryCountKilobytes / 1024}MB of memory\n");
+        this.KernelTerminal.WriteString($"{(this.SystemInformation.MemoryCountKilobytes / 1024).ToString()}MB of memory\n");
 
         this.KernelTerminal.WriteString("  Initializing network\n");
         this.Network = this.InstantiateNetworkManager();
@@ -105,25 +105,25 @@ public abstract partial class BoringKernel
 
     public void Run()
     {
-        try
-        {
+        // try
+        // {
             List<Program> programs = this.InstantiatePrograms();
             this.StartUserspace(programs);
-        }
-        catch(Exception e)
-        {
-            try
-            {
-                this.HandleCrash(e, this.KernelTerminal);
-            }
-            catch(Exception ee)
-            {
-                this.WriteAll("Could not properly handle crash. Halt.");
-                this.WriteAll(ee.ToString());
-                this.HaltKernel();
-                return;
-            }
-        }
+        // }
+        // catch(Exception e)
+        // {
+            // try
+            // {
+                // this.HandleCrash(e, this.KernelTerminal);
+            // }
+            // catch(Exception ee)
+            // {
+                // this.WriteAll("Could not properly handle crash. Halt.");
+                // this.WriteAll(ee.ToString());
+                // this.HaltKernel();
+                // return;
+            // }
+        // }
 
         if(this.NeedsManualGarbageCollection) 
             this.CollectGarbage();
