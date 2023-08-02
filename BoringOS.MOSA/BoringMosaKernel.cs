@@ -1,3 +1,4 @@
+using BoringOS.MOSA.Hardware;
 using BoringOS.MOSA.Network;
 using BoringOS.MOSA.Terminal;
 using BoringOS.Network;

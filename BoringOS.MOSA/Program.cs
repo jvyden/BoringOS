@@ -1,4 +1,5 @@
 ﻿using System;
+using BoringOS.MOSA.Hardware;
 using Mosa.DeviceDriver;
 using Mosa.DeviceSystem;
 using Mosa.DeviceSystem.Service;

@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using Mosa.DeviceDriver.ScanCodeMap;
 using Mosa.DeviceSystem;
 using Mosa.DeviceSystem.Service;
-using KernelKeyboard = Mosa.Kernel.x86.Keyboard;
 using Keyboard = Mosa.DeviceSystem.Keyboard;
 
-namespace BoringOS.MOSA;
+namespace BoringOS.MOSA.Hardware;
 
 public static class InputManager
 {
