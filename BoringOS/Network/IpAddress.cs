@@ -92,7 +92,7 @@ public readonly struct IpAddress
         
         return address.ToString();
 #else
-        return this._a + '.' + this._b + '.' + this._c + '.' + this._d.ToString();
+        return this.A + '.' + this.B + '.' + this.C + '.' + this.D.ToString();
 #endif
     }
 

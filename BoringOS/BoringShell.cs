@@ -108,10 +108,10 @@ public class BoringShell
         
         this._session.Terminal.WriteChar('\n');
 
-        List<string> args = line.Split(' ')
-            .Select(a => a.Trim())
-            .ToList();
-        
+        string[] args = line.Split(' ');
+        for (int i = 0; i < args.Length; i++)
+            args[i] = args[i].Trim();
+
         ProcessLine(args);
     }
 

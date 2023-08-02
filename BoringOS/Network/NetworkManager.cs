@@ -28,7 +28,8 @@ public abstract class NetworkManager
         this._addedAdapters++;
     }
 
-    public IEnumerable<NetworkAdapter> GetAdapters() => new List<NetworkAdapter>(this._adapters.Take(this._addedAdapters));
+    // TODO: should use .Take(_addedAdapters);
+    public IEnumerable<NetworkAdapter> GetAdapters() => new List<NetworkAdapter>(this._adapters);
 
     public abstract PingClient GetPingClient();
 }
